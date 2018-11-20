@@ -29,8 +29,7 @@
         'school_booking',
     ],
     'data': [
-        'views/website_booking.xml',
-        'views/templates.xml',
+        'views/angular_booking.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'description': '''

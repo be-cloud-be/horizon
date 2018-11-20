@@ -29,14 +29,14 @@ from openerp.addons.auth_oauth.controllers.main import OAuthLogin as Home
 
 _logger = logging.getLogger(__name__)
 
-class BookingLoginController(Home):
+class AngularLoginController(Home):
     
     @http.route('/angular/login_providers', type='json', auth="none")
-    def booking_login(self, redirect=None, *args, **kw):
+    def angular_login(self, redirect=None, *args, **kw):
         return self.list_providers()
 
-class BookingController(http.Controller):
+class AngularController(http.Controller):
 
     @http.route('/angular', type='http', auth='public', website=True)
     def angular_app(self, debug=False, **k):
-        return request.render('website_angular.app')
+        return http.redirect_with_hash('/website_angular/static/dist/index.html')
