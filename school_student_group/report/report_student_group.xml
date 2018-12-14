@@ -172,9 +172,6 @@
                                             </td>-->
                                             <td>
                                                 <span t-field="partner.lastname" />
-                                                <t t-foreach="partner.student_current_bloc_ids" t-as="bloc">
-                                                    <br/><span t-field="bloc.source_bloc_name" />
-                                                </t>
                                             </td>
                                             <td>
                                                 <span t-field="partner.firstname" />

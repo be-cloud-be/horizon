@@ -57,6 +57,12 @@ class CourseDocumentation(models.Model):
     def _needaction_domain_get(self):
         return [('state', '=', 'draft')]
     
+    @api.onchange('course_id')
+    def _onchange_course_id(self):
+        self.write({
+            'course_ids' : [(4,self.course_id)]
+        })
+    
     #@api.one
     #@api.constrains('state', 'course_id')
     #def _check_uniqueness(self):
@@ -158,7 +164,7 @@ class Course(models.Model):
     @api.one
     @api.depends('all_documentation_ids')
     def _compute_count(self):
-        self.all_documentation_count = len(self.all_documentation_ids)
+        self.all_documentation_count = len(self.documentation_ids)
     
     @api.one
     def compute_documentation_id(self):

@@ -630,7 +630,7 @@
                         </div>  
                         <div class="col-md-6">
                             <div class="alert alert-success" role="alert">
-                                A obtenu 180 crédits ECTS - Sanctionné avec <t t-esc="widget.program.grade_text"/> <br/> 
+                                A obtenu <t t-esc="widget.program.required_credits"/> crédits ECTS - Sanctionné avec <t t-esc="widget.program.grade_text"/> <br/> 
                                 <t t-if="widget.program.grade_comments" t-esc="widget.program.grade_comments"/>
                             </div>
                         </div>  

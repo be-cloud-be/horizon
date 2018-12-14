@@ -38,6 +38,14 @@ class school_course_documentation(http.Controller):
         }
         return request.website.render("school_course_description.school_course", values)
         
+    @http.route(['/course_group_doc/<model("school.course_group"):cg>'], type='http', auth='public', website=True)
+    def course_group_doc(self, cg, redirect=None, **post):
+        values = {
+            'course' : cg,
+            'doc' : course.documentation_id,
+        }
+        return request.website.render("school_course_description.school_course", values)
+        
     @http.route(['/course_doc/edit/<model("school.course"):course>'], type='http', auth='user', website=True)
     def course_doc_edit(self, course, redirect=None, **post):
         draft_doc = course.env['school.course_documentation'].search([['course_id', '=', course.id],['state','=','draft']])

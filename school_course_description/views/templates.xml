@@ -38,6 +38,96 @@
         </xpath>
     </template>
 
+    <template id="school_course_group" name="Course Group Documentation">
+        <t t-call="website.layout">
+            <t t-set="title">Course Group Description</t>
+            <div class="oe_structure">
+                <div class="container">
+                  <div class="page-header">
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h1>Course Group Description - <span t-field="cg.name"/></h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                      <div class="panel-heading">Course Group Informations</div>
+                      <div class="panel-body">
+                          <table class="table table-striped">
+                              <colgroup>
+                                  <col style="width:250px"/>
+                                  <col style="width:100%"/>
+                              </colgroup>
+                              <tbody>
+                                <tr>
+                                  <td>Code</td>
+                                  <td><span t-field="o.ue_id"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Cycle</td>
+                                  <td><span t-field="o.cycle_id.grade"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Teacher</td>
+                                  <td><span t-field="o.teacher_id"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Period</td>
+                                  <td><span t-field="o.period"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Credits</td>
+                                  <td><span t-field="o.total_credits"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Hours</td>
+                                  <td><span t-field="o.total_hours"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Mandatory</td>
+                                  <td><t t-if="o.mandatory"><input type="checkbox" value="" checked=""/></t><t t-if="not(o.mandatory)"><input type="checkbox" value=""/></t></td>
+                                </tr>
+                              </tbody>
+                           </table>
+                      </div>
+                  </div>
+                  <div class="panel panel-default">
+                      <div class="panel-heading">Course Informations</div>
+                      <div class="panel-body">
+                          <table class="table table-striped">
+                              <colgroup>
+                                  <col style="width:600px"/>
+                                  <col style="width:100px"/>
+                                  <col style="width:100px"/>
+                                  <col style="width:100px"/>
+                              </colgroup>
+                              <tr>
+                                <td>Title</td>
+                                <td>Hours</td>
+                                <td>Credits</td>
+                                <td>Weight</td>
+                              </tr>
+                              <tr t-foreach="o.course_ids" t-as="course">
+                                <td t-if="course.url_ref">
+                                    <a t-esc="course.title" data-toggle="modal" data-target="#noDescription" style="cursor: pointer;"/>
+                                    <br/><t t-foreach="course.teacher_ids" t-as="teacher"><i style="color:grey;" t-esc="teacher.name"/><t t-if="teacher_index &lt; (teacher_size - 1)">,</t></t>
+                                </td>
+                                <td t-if="not course.url_ref">
+                                    <a t-esc="course.title" data-toggle="modal" data-target="#noDescription" style="cursor: pointer;"/>
+                                    <br/><t t-foreach="course.teacher_ids" t-as="teacher"><i style="color:grey;"  t-esc="teacher.name"/><t t-if="teacher_index &lt; (teacher_size - 1)">,</t></t>
+                                </td>
+                                <td class="text-center"><t t-esc="course.hours"/></td>
+                                <td class="text-center"><t t-esc="course.credits"/></td>
+                                <td class="text-center"><t t-esc="course.weight"/></td>
+                              </tr>
+                          </table>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
     <template id="school_course" name="Course Documentation">
         <t t-call="website.layout">
             <t t-set="title">Course Description</t>

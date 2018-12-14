@@ -69,6 +69,9 @@
                           <h3 class="oe_fade">
                             by <field name="author_id" class="oe_inline" readonly="1"/>
                           </h3>
+                          <h3 class="oe_fade">
+                            for <field name="course_ids" class="oe_inline" widget="many2many_tags"/>
+                          </h3>
                         </div>
                         <div style="font-size:x-small;background-color: #eeeeee;font-style: italic;padding:10px;">
                           <p>

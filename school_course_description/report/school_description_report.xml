@@ -193,7 +193,7 @@
     -->
 
     <report id="report_course_group_description" 
-            model="school.course_documentation" 
+            model="school.course_group" 
             string="Course Group Documentation" 
             report_type="qweb-pdf" 
             name="school_course_description.report_course_group_documentation_content" 
@@ -217,7 +217,7 @@
         </t>
     </template>
     
-    <template id="report_course_documentation_content">
+    <template id="report_course_group_documentation_content">
         <t t-call="report.html_container">
             <t t-set="data_report_margin_top" t-value="30"/>
             <t t-set="data_report_header_spacing" t-value="25"/>
@@ -227,7 +227,7 @@
                       <section>
                         <div class="row mt64 mb64">
                             <h1>
-                                <t t-if="o.state == 'draft'">Draft </t>Course Group Description
+                                Course Group Description
                             </h1>
                             <h1>
                                 <span t-field="o.title"/>
@@ -248,7 +248,7 @@
                                       </tr>
                                       <tr>
                                         <td>Cycle</td>
-                                        <td><span t-field="o.cycle_id"/></td>
+                                        <td><span t-field="o.cycle_id.grade"/></td>
                                       </tr>
                                       <tr>
                                         <td>Teacher</td>
@@ -256,7 +256,7 @@
                                       </tr>
                                       <tr>
                                         <td>Period</td>
-                                        <td><span t-field="o.perdiod"/></td>
+                                        <td><span t-field="o.period"/></td>
                                       </tr>
                                       <tr>
                                         <td>Credits</td>
@@ -274,6 +274,35 @@
                                  </table>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Course Informations</div>
+                            <div class="panel-body">
+                                <table class="table table-striped">
+                                    <colgroup>
+                                        <col style="width:600px"/>
+                                        <col style="width:100px"/>
+                                        <col style="width:100px"/>
+                                        <col style="width:100px"/>
+                                    </colgroup>
+                                    <tr>
+                                      <td>Title</td>
+                                      <td>Hours</td>
+                                      <td>Credits</td>
+                                      <td>Weight</td>
+                                    </tr>
+                                    <tr t-foreach="o.course_ids" t-as="course">
+                                      <td>
+                                        <a t-esc="course.title" t-att-href="'/course/%s' % course.id" target="new" style="cursor: pointer;"/>
+                                        <br/><t t-foreach="course.teacher_ids" t-as="teacher"><i style="color:grey;" t-esc="teacher.name"/><t t-if="teacher_index &lt; (teacher_size - 1)">,</t></t>
+                                      </td>
+                                      <td class="text-center"><t t-esc="course.hours"/></td>
+                                      <td class="text-center"><t t-esc="course.credits"/></td>
+                                      <td class="text-center"><t t-esc="course.weight"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
                         <div class="row" style="margin-top:40px;margin-bottom:40px;">
                             Imprimé le <span t-esc="datetime.datetime.now().strftime('%d-%m-%Y à %H:%M:%S')"/>
                         </div>

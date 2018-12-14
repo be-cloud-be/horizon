@@ -99,7 +99,7 @@ class Program(models.Model):
         
     competency_ids = fields.Many2many('school.competency','school_competency_program_rel', id1='program_id', id2='competency_id', string='Competencies', ondelete='set null')
     
-    cycle_id = fields.Many2one('school.cycle', string='Cycle')
+    cycle_id = fields.Many2one('school.cycle', string='Cycle', required=True, domain=[('type', '!=', False)])
     
     speciality_id = fields.Many2one('school.speciality', string='Speciality')
     domain_id = fields.Many2one(related='speciality_id.domain_id', string='Domain',store=True)
@@ -113,6 +113,38 @@ class Program(models.Model):
     
     bloc_ids = fields.One2many('school.bloc', 'program_id', string='Blocs', copy=True)
     
+    course_group_ids = fields.One2many('school.course_group', string='Courses Groups',compute='_compute_course_group_ids')
+    
+    @api.one
+    def _compute_course_group_ids(self):
+        course_group_ids = False
+        for bloc in self.bloc_ids:
+            if course_group_ids :
+                course_group_ids |= bloc.course_group_ids
+            else :
+                course_group_ids = bloc.course_group_ids
+        self.course_group_ids = course_group_ids
+        
+    bloc1_title = fields.Text(compute='_compute_bloc_course_group_ids')
+    bloc2_title = fields.Text(compute='_compute_bloc_course_group_ids')
+    bloc3_title = fields.Text(compute='_compute_bloc_course_group_ids')
+        
+    bloc1_course_group_ids = fields.One2many('school.course_group', string='Courses Groups Bloc 1', compute='_compute_bloc_course_group_ids')
+    bloc2_course_group_ids = fields.One2many('school.course_group', string='Courses Groups Bloc 2', compute='_compute_bloc_course_group_ids')
+    bloc3_course_group_ids = fields.One2many('school.course_group', string='Courses Groups Bloc 3', compute='_compute_bloc_course_group_ids')
+    
+    @api.one
+    def _compute_bloc_course_group_ids(self):
+        if len(self.bloc_ids) > 0 :
+            self.bloc1_title = self.bloc_ids[0].name
+            self.bloc1_course_group_ids = self.bloc_ids[0].course_group_ids
+        if len(self.bloc_ids) > 1 :
+            self.bloc2_title = self.bloc_ids[1].name
+            self.bloc2_course_group_ids = self.bloc_ids[1].course_group_ids
+        if len(self.bloc_ids) > 2 :
+            self.bloc3_title = self.bloc_ids[2].name
+            self.bloc3_course_group_ids = self.bloc_ids[2].course_group_ids
+        
     @api.multi
     def unpublish(self):
         return self.write({'state': 'draft'})
@@ -256,6 +288,13 @@ class CourseGroup(models.Model):
         for bloc_id in self.bloc_ids:
             if bloc_id.program_id.state in ('published','archived') and not self.env.user._is_admin() :
                 raise UserError('Cannot change credits or hours of courses used in an active or archived program : %s in %s' % (course_id.name, bloc_id.name))
+    
+    
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        if name :
+                args = ['|'] + (args or []) + [('ue_id', 'ilike', name)]
+        return super(CourseGroup, self).name_search(name=name, args=args, operator=operator, limit=limit)
     
 class Course(models.Model):
     '''Course'''

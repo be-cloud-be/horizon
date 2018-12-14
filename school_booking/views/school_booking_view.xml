@@ -123,6 +123,7 @@
       <field name="arch" type="xml">
         <search string="Search Booking">
           <field name="name" filter_domain="[('name','ilike',self)]" />
+          <field name="room_id" />
           <filter string="Recurring" name="recurring" domain="[('recurrency','=',True)]" />
           <filter string="Student Booking" name="student" domain="[('categ_ids','=',%(school_booking.school_student_event_type)d)]" />
           <filter string="Teacher Booking" name="teacher" domain="[('categ_ids','=',%(school_booking.school_teacher_event_type)d)]" />

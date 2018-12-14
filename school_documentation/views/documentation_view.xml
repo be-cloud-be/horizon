@@ -30,5 +30,29 @@
         </record>
 
         <menuitem name="Documentation" id="menu_school_doc" icon="fa-calendar" web_icon="school_documentation,static/description/icon.png" sequence="900" action="action_documentation" />
+    
+        <!-- Add groups to Course form view -->
+        <record id="course_documentation_form" model="ir.ui.view">
+            <field name="name">school.course.documentation.view</field>
+            <field name="model">school.course</field>
+            <field name="inherit_id" ref="school_management.course_form" />
+            <field eval="25" name="priority" />
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="documentation" string="Documentation">
+                        <group>
+                            <field name="documentation_id"/>
+                        </group>
+                        <field name="documentation_ids">
+                            <tree string="Documentation">
+                                <field name="name" />
+                                <field name="author_id" />
+                                <field name="state" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>

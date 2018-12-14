@@ -49,9 +49,8 @@
             <field eval="18" name="priority" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='total_credits']" position="after">
-                    <field name="total_dispensed_credits" />
-                    <field name="total_acquiered_credits" />
-                    <field name="total_not_acquiered_credits" />
+                    <field name="total_acquiered_not_dispensed_credits" />
+                    <field name="total_not_dispensed_credits" />
                     <field name="state"/>
                 </xpath>
                 <!--<xpath expr="//notebook[last()]" position="inside">
@@ -104,11 +103,20 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,progress,awarded,abandonned" />
                     </header>
                 </xpath>
+                <xpath expr="//field[@name='image']" position="before">
+                    <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                    </div>
+                </xpath>
                 <xpath expr="//field[@name='required_credits']" position="after">         
-                    <field name="historical_bloc_1_credits"/>
+                    <!--<field name="historical_bloc_1_credits"/>
                     <field name="historical_bloc_1_eval"/>
                     <field name="historical_bloc_2_credits"/>
-                    <field name="historical_bloc_2_eval"/>
+                    <field name="historical_bloc_2_eval"/>-->
                     <field name="total_registered_credits" />
                     <field name="total_acquiered_credits" />
                     <field name="evaluation" />
@@ -118,9 +126,44 @@
                     <field name="grade_comments" colspan="4"/>
                 </xpath>
                 <xpath expr="//field[@name='source_bloc_name']" position="after">
-                    <field name="total_acquiered_credits" />
+                    <field name="total_acquiered_not_dispensed_credits" />
+                    <field name="total_not_dispensed_credits" />
                     <field name="evaluation"/>
                     <field name="state"/>
+                </xpath>
+                <xpath expr="//field[@name='ind_course_group_ids']/tree" position="attributes">
+                    <attribute name="colors">green:state=='confirmed' and acquiered == 'A';grey:state=='confirmed' and acquiered == 'NA';orange:state=='draft';blue:state=='progress'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='ind_course_group_ids']/tree/field[@name='total_credits']" position="after">
+                    <field name="dispense"/>
+                    <field name="final_result"/>
+                    <field name="acquiered"/>
+                    <field name="state"/>
+                    <button type="object" icon="fa-archive" name="valuate_course_group" string="Valuate Course Group" attrs="{'invisible': [('state', '!=', ('draft'))]}"/>
+                </xpath>
+                <xpath expr="//field[@name='bloc_ids']" position="after">
+                    <h2>Unités d'enseignement valorisées</h2>
+                    <field name="valuated_course_group_ids">
+                      <tree string="Course Group" create="0">
+                        <field name="ue_id"/>
+                        <field name="name"/>
+                        <field name="total_hours" sum="total_hours_valo"/>
+                        <field name="total_credits" sum="total_credits_valo"/>
+                        <field name="state"/>
+                       </tree>
+                    </field>
+                </xpath>
+                <xpath expr="//field[@name='ind_course_group_ids']" position="after">
+                    <h2>Unités d'enseignement restant à acquérir</h2>
+                    <field name="remaining_not_planned_course_group_ids" context="{'program_id': active_id}" options="{'not_delete': True, 'reload_on_button': True, 'no_create': True}">
+                      <tree string="Course Group" create="0" delete="0">
+                        <field name="ue_id"/>
+                        <field name="name"/>
+                        <field name="total_hours" sum="total_hours_rem"/>
+                        <field name="total_credits" sum="total_credits_rem"/>
+                        <button type="object" icon="fa-archive" name="valuate_course_group" string="Valuate Course Group"/>
+                       </tree>
+                    </field>
                 </xpath>
             </field>
         </record>
@@ -180,11 +223,11 @@
                     </header>
                 </xpath>
                 <xpath expr="//field[@name='total_credits']" position="after">
-                    <field name="total_dispensed_credits" />
-                    <field name="total_acquiered_credits" />
-                    <field name="total_not_acquiered_credits" />
+                    <field name="total_dispensed_credits"/>
                     <newline/>
-                    <field name="evaluation" />
+                    <field name="total_acquiered_not_dispensed_credits"/>
+                    <field name="total_not_dispensed_credits"/>
+                    <field name="evaluation"/>
                     <field name="exclude_from_deliberation" string="Exc Delib"/>
                     <field name="decision" colspan="4"/>
                 </xpath>
@@ -193,6 +236,8 @@
                     <field name="second_session_result" string="S2" />
                     <field name="final_result" string="Fin" />
                     <field name="acquiered" string="Acq" />
+                    <field name="state"/>
+                    <button type="object" icon="fa-archive" name="valuate_course_group" string="Valuate Course Group" attrs="{'invisible': [('state', '!=', ('draft'))]}"/>
                 </xpath>
             </field>
         </record>
@@ -206,8 +251,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='total_credits']" position="after">
                     <field name="total_dispensed_credits" />
-                    <field name="total_acquiered_credits" />
-                    <field name="total_not_acquiered_credits" />
+                    <field name="total_acquiered_not_dispensed_credits" />
+                    <field name="total_not_dispensed_credits" />
                     <field name="state"/>
                 </xpath>
             </field>
@@ -226,7 +271,7 @@
             </field>
         </record>
 
-        <!-- Add evaluation to Individual Course form view -->
+        <!-- Add evaluation to Individual Course tree view -->
         <record id="individual_course_group_eval_tree" model="ir.ui.view">
             <field name="name">school.individual_course_group.eval.tree</field>
             <field name="model">school.individual_course_group</field>
@@ -237,6 +282,8 @@
                     <field name="dispense" string="Dis" readonly="1" />
                     <field name="final_result" string="Res"/>
                     <field name="acquiered" string="Acq" readonly="1" />
+                    <field name="state"/>
+                    <button type="object" icon="fa-archive" name="valuate_course_group" string="Valuate Course Group" attrs="{'invisible': [('state', '!=', ('draft'))]}"/>
                 </xpath>
             </field>
         </record>
@@ -248,6 +295,12 @@
             <field name="inherit_id" ref="school_management.individual_course_group_form" />
             <field eval="25" name="priority" />
             <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="set_to_confirmed" type="object" states="candidate" string="Confirm valuation" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,progress,candidate,confirmed" />
+                    </header>
+                </xpath>
                 <xpath expr="//field[@name='source_course_id']" position="before">
                     <field name="first_session_result" string="S1" />
                     <field name="second_session_result" string="S2" />
@@ -271,7 +324,7 @@
                         <field name="second_session_deliberated_result_bool" string="Deliberated" />
                         <field name="second_session_deliberated_result" attrs="{'readonly':[('second_session_deliberated_result_bool','==',False)]}" string="Deliberated Result" />
                         <field name="second_session_result" widget="statinfo" string="Session Result" />
-                        <field name="first_session_result_bool" string="Session Result Bool" groups="base.group_configuration"/>
+                        <field name="second_session_result_bool" string="Session Result Bool" groups="base.group_configuration"/>
                         <field name="second_session_acquiered" string="Acquired" />
                         <field name="second_session_result_bool" invisible="1" />
                     </group>
@@ -370,7 +423,7 @@
             </field>
         </record>
 
-        <!-- Add evaluation to Individual Course form view -->
+        <!-- Add evaluation to Individual Course tree view -->
         <record id="individual_course_eval_tree_security" model="ir.ui.view">
             <field name="name">school.individual_course.eval.tree.sec</field>
             <field name="model">school.individual_course</field>

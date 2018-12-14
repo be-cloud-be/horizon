@@ -48,13 +48,11 @@
                                 <span class="oe_fade">
                                       Id : <field name="id" options="{&quot;no_open&quot;:True}" class="oe_inline"/>
                                 </span>
-                                <h2 attrs="{'invisible': [('student','=',False)]}">
-                                    <field name="student_current_bloc_name" />
-                                </h2>
-                                <h3>
+                                <group>
+                                    <field name="category_id" widget="many2many_tags" placeholder="Tags..."/>
                                     <field name="user_ids" invisible="1"/>
                                     <field name="email" widget="email" attrs="{'required': [('user_ids','!=', [])]}" placeholder="Email"/>
-                                </h3>
+                                </group>
                                 <div class="oe_edit_only">
                     		        <group attrs="{'invisible': [('is_company', '=', True)]}" modifiers="{'invisible': [['is_company', '=', true]]}">
                     				    <field name='student' />
@@ -64,14 +62,6 @@
                     					<field name="firstname" attrs="{'required': [('lastname', '=', False),('type','=','contact'),('is_company', '=', False)]}" on_change="1" modifiers="{'required': [['lastname', '=', false], ['type', '=', 'contact'], ['is_company', '=', false]]}"/>
                     				</group>
                     			</div>
-                    			<field name="student_bloc_ids" attrs="{'invisible': [('student','=',False)]}">
-                                    <tree string="Blocs" default_order='year_id desc'>
-                                        <field name="year_id" />
-                                        <field name="source_bloc_name" />
-                                        <field name="total_credits" />
-                                    </tree>
-                                </field>
-                    			<field name="category_id" widget="many2many_tags" placeholder="Tags..."/>
                     			<field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': ['|',('is_company','=', True),('student','=',True)]}"/>
                             </div>
                         </div>
@@ -88,9 +78,9 @@
                             <field name="is_company" invisible="1"/>
                             <field name="parent_id" invisible="1"/>
                             <field name="type" attrs="{'invisible': [('parent_id','=', False)]}" groups="base.group_no_one"/>
-                            <label for="street" string="Main Address"/>
                             <div class="row">
-                                <div class="col-md-6 mb16">
+                                <div class="col-md-3 mb16">
+                                    <label for="street" string="Main Address"/>
                                     <div class="o_address_format">
                                         <div class="oe_edit_only">
                                             <button name="open_parent" type="object" string="(edit)" class="oe_link" attrs="{'invisible': ['|', ('parent_id', '=', False), ('type', '!=', 'contact')]}"/>
@@ -103,6 +93,17 @@
                                         <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
                                     </div>
                                 </div>
+                                <div class="col-md-3 mb16 ">
+                                    <label for="secondary_street" string="Alternative Address"/>
+                                    <div class="o_address_format">
+                                        <field name="secondary_street" placeholder="Street..." class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                        <field name="secondary_street2" placeholder="Street 2..." class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                        <field name="secondary_city" placeholder="City" class="o_address_city" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                        <field name="secondary_state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}" on_change="onchange_state(state_id)" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" context="{'country_id': country_id, 'zip': zip}"/>
+                                        <field name="secondary_zip" placeholder="ZIP" class="o_address_zip" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                        <field name="secondary_country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                                    </div>
+                                </div>
                                 <div class="col-md-6 mb16">
                                     <group col="2">
                                         <field name='email_personnel' />
@@ -112,48 +113,17 @@
                                     </group>
                                 </div>
                             </div>
-                            <label for="child_ids" string="Alternative Addresses"/>
-                            <field name="child_ids" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier, 'default_customer': customer, 'default_lang': lang,'default_name':name,'default_type':'invoice'}">
-                                <tree>
-                                    <field name="street"/>
-                                    <field name="city"/>
-                                    <field name="country_id"/>
-                                </tree>
-                                <form string="Contact / Address">
-                                    <sheet>
-                                        <field name="type" required="1" widget="radio" options="{'horizontal': true}" invisible="1"/>
-                                        <hr/>
-                                        <group>
-                                            <group attrs="{'invisible': [('type','=', 'contact')]}">
-                                                <label for="street" string="Address"/>
-                                                <div>
-                                                    <div class="o_address_format" name="div_address">
-                                                        <field name="street" placeholder="Street..." class="o_address_street"/>
-                                                        <field name="street2" placeholder="Street 2..." class="o_address_street"/>
-                                                        <field name="city" placeholder="City" class="o_address_city"/>
-                                                        <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}" on_change="onchange_state(state_id)" context="{'country_id': country_id, 'zip': zip}"/>
-                                                        <field name="zip" placeholder="ZIP" class="o_address_zip"/>
-                                                        <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
-                                                    </div>
-                                                </div>
-                                            </group>
-                                            <group invisible="1">
-                                                <field name="name" string="Contact Name" attrs="{'required' : [('type', '=', 'contact')]}"/>
-                                                <field name="title" placeholder="e.g. Mr." attrs="{'invisible': [('type','&lt;&gt;', 'contact')]}"/>
-                                                <field name="function" placeholder="e.g. Sales Director" attrs="{'invisible': [('type','&lt;&gt;', 'contact')]}"/>
-                                                <field name="email"/>
-                                                <field name="phone" widget="phone"/>
-                                                <field name="mobile" widget="phone"/>
-                                                <field name="comment" placeholder="internal note..."/>
-                                            </group>
-                                        </group>
-                                        <field name="supplier" invisible="True"/>
-                                        <field name="customer" invisible="True"/>
-                                        <field name="lang" invisible="True"/>
-                                    </sheet>
-                                </form>
-                            </field>
                         </page>
+                        <page name="program_page" string="Etudes" attrs="{'invisible': [('is_company','=',True)]}" modifiers="{'invisible': [['is_company', '=', true]]}">
+            				<field name="student_bloc_ids" attrs="{'invisible': [('student','=',False)]}">
+                                <tree string="Blocs" default_order='year_id desc' create="false" edit="false" delete="false">
+                                    <field name="year_id" />
+                                    <field name="program_id" />
+                                    <field name="source_bloc_name" />
+                                    <field name="total_credits" />
+                                </tree>
+                            </field>
+            			</page>
                         <page name="personal_information_page" string="Informations personnelles" attrs="{'invisible': [('is_company','=',True)]}" modifiers="{'invisible': [['is_company', '=', true]]}">
             				<group name="personal_information_group">
             				    <field name="title" options="{&quot;no_open&quot;: True}" attrs="{'invisible': [('is_company', '=', True)]}"/>
@@ -181,9 +151,6 @@
                                 </group>
                             </group>
                         </page>
-                        <page name="internal_notes" string="Internal Notes">
-                            <field name="comment" placeholder="Internal note..."/>
-                        </page>
                     </notebook>
                 </sheet>
                 </xpath>
@@ -201,7 +168,6 @@
             <field name="arch" type="xml">
                 <search string="Search Partner">
                     <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]" />
-                    <field name="student_current_bloc_name" filter_domain="[('student_current_bloc_name','ilike',self)]" string="Bloc"/>
                     <separator/>
                     <filter string="Persons" name="type_person" domain="[('is_company','=',0)]" />
                     <filter string="Companies" name="type_company" domain="[('is_company','=',1)]" />
@@ -216,12 +182,9 @@
                     <filter string="Registered previous" name="registered_prev" domain="[('year_sequence','=','previous')]" />
                     <filter string="Registered next" name="registered_next" domain="[('year_sequence','=','next')]" />
                     <filter string="Never registered" name="registered_never" domain="[('year_sequence','=','never')]" />
-                    <group expand="0" name="group_by" string="Group By">
-                        <filter string="Bloc" context="{'group_by': 'student_current_bloc_name'}" />
-                    </group>
-                    <!-- <separator/>
+                    <separator/>
                    <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
-                   <field name="user_id"/>
+                   <!--<field name="user_id"/>
                    <field name="parent_id" domain="[('is_company','=',1)]" operator="child_of"/>
                    <group expand="0" name="group_by" string="Group By">
                        <filter string="Company" context="{'group_by': 'parent_id'}"/>
@@ -241,13 +204,7 @@
                 <field name="mobile" position="after">
                     <!--<field name="has_paid_current_minerval" /> -->
                     <field name="student" />
-                    <field name="student_current_bloc_name" attrs="{'invisible': [('student','=',False)]}" />
                 </field>
-                <xpath expr="//div[@class='oe_kanban_details']//ul" position="replace">
-                    <li t-if="record.student_current_bloc_name.value" class="o_text_overflow">
-                        <field name="student_current_bloc_name" />
-                    </li>
-                </xpath>
                 <!--<xpath expr="//div[@class='oe_kanban_partner_links']" position="inside">
                     <t t-if="record.has_paid_current_minerval.raw_value == true">
                         <span class="badge" attrs="{'invisible': [('student','=',False)]}"><i class="fa fa-check-square" aria-hidden="true"></i></span>
@@ -268,9 +225,9 @@
                 <tree string="Contacts">
                     <field name="display_name" />
                     <field name="function" invisible="1" />
-                    <field name="student_current_bloc_id" />
                     <!--<field name="has_paid_current_minerval" />-->
                     <field name="email" />
+                    <field name="category_id" />
                     <field name="user_id" invisible="1" />
                     <field name="is_company" invisible="1" />
                     <field name="country_id" invisible="1" />

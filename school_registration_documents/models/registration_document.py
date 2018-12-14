@@ -35,6 +35,8 @@ class Partner(models.Model):
     official_document_count = fields.Integer(string='Missing Official Documents Count', compute="_compute_official_document_missing_count")
     official_document_missing_count = fields.Integer(string='Missing Official Documents Count', compute="_compute_official_document_missing_count")
     
+    google_drive_folder = fields.Char(string="Google Drive Folder")
+    
     @api.depends('official_document_ids','official_document_ids.is_available')
     @api.multi
     def _compute_official_document_missing_count(self):

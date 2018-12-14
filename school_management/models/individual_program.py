@@ -33,7 +33,11 @@ class IndividualProgram(models.Model):
     
     _order = 'name'
 
+    active = fields.Boolean(string='Active', help="The active field allows you to hide the course group without removing it.", default=True, copy=False)
+
     name = fields.Char(compute='_compute_name',string='Name', readonly=True, store=True)
+    
+    year_id = fields.Many2one('school.year', string='Registration Year', default=lambda self: self.env.user.current_year_id)
     
     student_id = fields.Many2one('res.partner', string='Student', domain="[('student', '=', '1')]", required=True)
     student_name = fields.Char(related='student_id.name', string="Student Name", readonly=True, store=True)
@@ -42,14 +46,31 @@ class IndividualProgram(models.Model):
     image_medium = fields.Binary('Image', attachment=True, related='student_id.image_medium')
     image_small = fields.Binary('Image', attachment=True, related='student_id.image_small')
     
-    cycle_id = fields.Many2one('school.cycle', string='Cycle', required=True)
+    source_program_id = fields.Many2one('school.program', string="Source Program", ondelete="restrict")
     
-    speciality_id = fields.Many2one('school.speciality', string='Speciality', required=True)
+    cycle_id = fields.Many2one('school.cycle', related='source_program_id.cycle_id', string='Cycle', store=True, readonly=True)
+    
+    speciality_id = fields.Many2one('school.speciality', related='source_program_id.speciality_id', string='Speciality', store=True, readonly=True)
     domain_id = fields.Many2one(related='speciality_id.domain_id', string='Domain',store=True)
     section_id = fields.Many2one(related='speciality_id.section_id', string='Section',store=True)
     track_id = fields.Many2one(related='speciality_id.track_id', string='Track',store=True)
     
     required_credits = fields.Integer(related='cycle_id.required_credits',string='Requiered Credits')
+    
+    course_group_ids = fields.One2many('school.course_group', string='Courses Groups', compute='_compute_ind_course_group_ids')
+    
+    ind_course_group_ids = fields.One2many('school.individual_course_group', string='Ind Courses Groups', compute='_compute_ind_course_group_ids')
+    
+    @api.one
+    def _compute_ind_course_group_ids(self):
+        course_group_ids = False
+        for bloc in self.source_program_id.bloc_ids:
+            if course_group_ids :
+                course_group_ids |= bloc.course_group_ids
+            else :
+                course_group_ids = bloc.course_group_ids
+        self.course_group_ids = course_group_ids
+        self.ind_course_group_ids = self.env['school.individual_course_group'].search([('bloc_id','in',self.bloc_ids.ids)])
     
     @api.one
     @api.depends('cycle_id.name','speciality_id.name','student_id.name')
@@ -57,19 +78,8 @@ class IndividualProgram(models.Model):
         self.name = "%s - %s - %s" % (self.student_id.name,self.cycle_id.name,self.speciality_id.name)
         
     bloc_ids = fields.One2many('school.individual_bloc', 'program_id', string='Individual Blocs')
-    highest_level =  fields.Integer(compute='_compute_highest_level',string='Highest Level', store=True)
-
-    course_group_ids = fields.One2many('school.individual_course_group', 'bloc_id', string='Courses Groups',compute='_compute_course_group_ids')
     
-    @api.one
-    def _compute_course_group_ids(self):
-        ret = False
-        for bloc in self.bloc_ids:
-            if ret:
-                ret |= bloc.course_group_ids
-            else:
-                ret = bloc.course_group_ids
-        self.course_group_ids = ret
+    highest_level =  fields.Integer(compute='_compute_highest_level',string='Highest Level', store=True)
 
     @api.one
     @api.depends('bloc_ids.source_bloc_level')
@@ -87,6 +97,8 @@ class IndividualBloc(models.Model):
     _inherit = ['mail.thread','school.year_sequence.mixin']
     
     _order = 'year_id, source_bloc_level desc, source_bloc_name'
+    
+    active = fields.Boolean(string='Active', help="The active field allows you to hide the course group without removing it.", default=True, copy=False)
     
     name = fields.Char(compute='_compute_name',string='Name', readonly=True, store=True)
     
@@ -129,7 +141,7 @@ class IndividualBloc(models.Model):
     image_medium = fields.Binary('Image', attachment=True, related='student_id.image_medium')
     image_small = fields.Binary('Image', attachment=True, related='student_id.image_small')
     
-    course_group_ids = fields.One2many('school.individual_course_group', 'bloc_id', string='Courses Groups',track_visibility='onchange')
+    course_group_ids = fields.One2many('school.individual_course_group', 'bloc_id', string='Courses Groups', track_visibility='onchange')
     
     total_credits = fields.Integer(compute='_get_courses_total', string='Credits')
     total_hours = fields.Integer(compute='_get_courses_total', string='Hours')
@@ -203,10 +215,10 @@ class IndividualCourseGroup(models.Model):
     _description='Individual Course Group'
     _inherit = ['mail.thread','school.year_sequence.mixin']
     
-    _order = 'sequence'
+    _order = 'year_id, sequence'
     
-    name = fields.Char(related="source_course_group_id.name", readonly=True)
-    ue_id = fields.Char(related="source_course_group_id.ue_id", readonly=True)
+    name = fields.Char(related="source_course_group_id.name", readonly=True) #, store=True)
+    ue_id = fields.Char(related="source_course_group_id.ue_id", readonly=True)# , store=True)
     title = fields.Char(related="source_course_group_id.title", readonly=True, store=True)
     
     sequence = fields.Integer(related="source_course_group_id.sequence", readonly=True, store=True)

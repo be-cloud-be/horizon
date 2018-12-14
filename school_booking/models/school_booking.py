@@ -133,21 +133,21 @@ class Event(models.Model):
                 event_day = fields.Datetime.from_string(self.start_datetime).date()
                 
                 duration_list = self.env['calendar.event'].read_group([
-                        ('user_id', '=', self.user_id.id), ('room_id','!=',False), ('categ_ids','in',student_event.id), ('start', '>', fields.Datetime.to_string(event_day)), ('start', '<', fields.Datetime.to_string(event_day + timedelta(days=1)))
+                        ('user_id', '=', self.user_id.id), ('room_id','!=',False), ('categ_ids','in',student_event.id), ('start', '>=', fields.Datetime.to_string(event_day)), ('start', '<=', fields.Datetime.to_string(event_day + timedelta(days=1)))
                     ],['room_id','duration'],['room_id'])
                 for duration in duration_list:
                     if duration['duration'] and duration['duration'] > 2:
                         raise ValidationError(_("You cannot book the room %s more than two hours per day") % (duration.get('room_id','')[1]))
                 
                 duration_list = self.env['calendar.event'].read_group([
-                        ('user_id', '=', self.user_id.id), ('categ_ids','in',student_event.id), ('room_id','!=',False), ('start', '>', fields.Datetime.to_string(event_day)), ('start', '<', fields.Datetime.to_string(event_day + timedelta(days=1)))
+                        ('user_id', '=', self.user_id.id), ('categ_ids','in',student_event.id), ('room_id','!=',False), ('start', '>=', fields.Datetime.to_string(event_day)), ('start', '<=', fields.Datetime.to_string(event_day + timedelta(days=1)))
                     ],['start_datetime','duration'],['start_datetime:day'])
                 for duration in duration_list:
                     if duration['duration'] and duration['duration'] > 6:
                         raise ValidationError(_("You cannot book more than six hours per day - %s") % duration['start_datetime:day'])
                 
                 duration_list = self.env['calendar.event'].read_group([
-                        ('user_id', '=', self.user_id.id), ('start', '>', fields.Datetime.now()), ('room_id','!=',False), ('categ_ids','in',student_event.id), ('start', '>', fields.Datetime.to_string(event_day)), ('start', '<', fields.Datetime.to_string(event_day + timedelta(days=1)))
+                        ('user_id', '=', self.user_id.id), ('start', '>', fields.Datetime.now()), ('room_id','!=',False), ('categ_ids','in',student_event.id), ('start', '>=', fields.Datetime.to_string(event_day)), ('start', '<=', fields.Datetime.to_string(event_day + timedelta(days=1)))
                     ],['start_datetime','duration'],['start_datetime:day'])
                 for duration in duration_list:
                     if duration['duration'] > 4:

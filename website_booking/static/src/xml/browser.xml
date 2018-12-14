@@ -79,6 +79,7 @@
                         class="circle" style="max-height: 56px;width: 56px;"/>
             </a>
             <ul>
+                <li><a class="btn-floating yellow darken-1" href="/booking_mobile"><i class="material-icons">phone_iphone</i></a></li>
                 <li><a class="btn-floating red darken-1" id="add-booking-button"><i class="material-icons">add</i></a></li>
                 <li><a class="btn-floating green" id="help-booking-button"><i class="material-icons">live_help</i></a></li>
                 <li><a class="btn-floating blue" id="logout-booking-button"><i class="material-icons">lock_outline</i></a></li>

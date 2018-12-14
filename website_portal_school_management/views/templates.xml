@@ -75,7 +75,6 @@
                     <col style="width:60px"/>
                     <col style="width:60px"/>
                     <col style="width:60px"/>
-                    <!--<col style="width:100px"/>-->
                     <col style="width:100px"/>
                     <col style="width:100px"/>
                 </colgroup>
@@ -86,9 +85,8 @@
                         <th class="text-center">Heures</th> 
                         <th class="text-center">ECTS</th>
                         <th class="text-center">Pond</th>
-                        <!--<th>Pré/Co-requis</th>-->
-                        <th>Quadrimestre</th>
-                        <th>Référentiel</th>
+                        <th>Pré-requis</th>
+                        <th>Co-requis</th>
                     </tr> 
                 </thead>
                 <tbody>
@@ -99,9 +97,8 @@
                         <td class="text-center"><t t-esc="course_group.total_hours"/></td>
                         <td class="text-center"><t t-esc="course_group.total_credits"/></td>
                         <td></td>
-                        <!--<td class="text-center">Aucun</td>-->
-                        <td></td>
-                        <td></td>
+                        <td><t t-foreach="course_group.pre_requisit_course_ids" t-as="pre_id"><t t-esc="pre_id.code_ue"/></t></td>
+                        <td><t t-foreach="course_group.co_requisit_course_ids" t-as="cor_id"><t t-esc="cor_id.code_ue"/></t></td>
                     </tr>
                     <tr t-foreach="course_group.course_ids" t-as="course">
                         <td></td>

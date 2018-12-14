@@ -23,59 +23,39 @@
 <openerp>
     <data>
         <!-- Add program for student form view -->
-        <record id="view_partners_form_school" model="ir.ui.view">
-            <field name="name">view.res.partner.form.school.reg</field>
+        <record id="view_program_form_school" model="ir.ui.view">
+            <field name="name">view.program.form.school.reg</field>
+            <field name="model">school.individual_program</field>
+            <field name="inherit_id" ref="school_management.individual_program_form" />
+            <field eval="25" name="priority" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='speciality_id']" position="after">
+                        <button string="Register PAE" type="object" name="register_pae" class="oe_highlight" context="{'default_program_id': active_id, 'default_student_id': student_id}" 
+                                    groups="school_management.group_employee" attrs="{'invisible': [('state','!=','progress')]}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="school_action_program_new" model="ir.actions.act_window">
+            <field name="name">Program</field>
+            <field name="res_model">school.individual_program</field>
+            <field name="view_mode">form</field>
+        </record>
+        
+        <!-- Add program for student form view -->
+        <record id="view_student_form_school_docs" model="ir.ui.view">
+            <field name="name">view.res.partner.form.school.docs</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="school_management.view_partners_form_school" />
             <field eval="25" name="priority" />
             <field name="arch" type="xml">
                 <xpath expr="//sheet" position="before">
                     <header>
-                        <button string="Assign Program" type="action" name="%(action_assign_program_view)d" class="oe_highlight" context="{'default_student_id': active_id}" attrs="{'invisible': [('student','=',False)]}" 
-                                    groups="school_management.group_employee"/>
+                        <button string="Assign Program" name="%(school_action_program_new)d" type="action" class="oe_highlight"
+                            context="{'default_student_id': active_id}" groups="school_management.group_employee"/>
                     </header>
                 </xpath>
             </field>
-        </record>
-        
-        <!-- Add evaluation to Individual Bloc form view -->
-        <record id="individual_bloc_regis_form" model="ir.ui.view">
-            <field name="name">school.individual_bloc.regis.view</field>
-            <field name="model">school.individual_bloc</field>
-            <field name="inherit_id" ref="school_evaluations.individual_bloc_eval_form" />
-            <field eval="25" name="priority" />
-            <field name="arch" type="xml">
-                <xpath expr="//button[@name='set_to_draft']" position="before">
-                    <button type="action" name="%(action_register_next_view)d" context="{'default_init_bloc_id': active_id}" states="awarded_first_session,awarded_second_session,failed" string="Register Next" class="oe_highlight"/>
-                    <button type="action" name="%(action_add_anticipated)d" context="{'default_init_bloc_id': active_id}" states="draft" string="Add anticipated" class="oe_highlight"/>
-                </xpath>
-                <xpath expr="//field[@name='course_group_ids']" position="after">
-                    <div>
-                        Standard Course - <font color="blue">Rework Course</font> - <font color="green">Anticipated Course</font> - <font color="orange">Dispense</font>
-                    </div>
-                </xpath>
-                <xpath expr='//tree' position="inside">
-                    <field name="group_registration_type" invisible="1"/>
-                    <field name="dispense" invisible="1"/>
-                </xpath>
-                <xpath expr='//tree' position="attributes">
-                    <attribute name="colors">blue:group_registration_type == 'rework';green:group_registration_type == 'anticipated';orange:dispense</attribute>
-                </xpath>
-            </field>
-        </record>
-        
-        <!-- Add evaluation to Individual Course Group form view -->
-        <record id="individual_course_group_regis_form" model="ir.ui.view">
-            <field name="name">school.individual_course_group.regis.view</field>
-            <field name="model">school.individual_course_group</field>
-            <field name="inherit_id" ref="school_management.individual_course_group_form" />
-            <field eval="25" name="priority" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='source_course_group_id']" position="after">
-                    <field name="group_registration_type" />
-                </xpath>
-            </field>
-            
         </record>
         
     </data>

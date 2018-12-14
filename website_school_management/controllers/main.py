@@ -79,7 +79,7 @@ class website_portal_school_management(http.Controller):
     @http.route(['/course/<course_id>'], type='http', auth='public')
     def course(self, course_id, redirect=None, **post):
         _, course_id = unslug(course_id)
-        course_docs = request.env['school.course_documentation'].sudo().search([('state', '=', 'published'),('course_ids','=',course_id)],order="author_id")
+        course_docs = request.env['school.course_documentation'].sudo().search([('state', '=', 'published'),'|',('course_ids','=',course_id),('course_id','=',course_id)],order="author_id")
         if course_docs:
             values = {
                 'docs': course_docs[0],
@@ -87,6 +87,19 @@ class website_portal_school_management(http.Controller):
             return request.render("school_course_description.report_course_documentation_content", values)
         else:
             return request.render("school_course_description.report_course_documentation_no_content", [])
+            
+            
+    @http.route(['/course_group/<course_group_id>'], type='http', auth='public')
+    def course_group(self, course_group_id, redirect=None, **post):
+        _, course_group_id = unslug(course_group_id)
+        course_group_id = request.env['school.course_group'].sudo().browse([course_group_id])
+        if course_group_id:
+            values = {
+                'docs': course_group_id,
+            }
+            return request.render("school_course_description.report_course_group_documentation_content", values)
+        else:
+            return request.render("school_course_description.report_course_group_documentation_no_content", [])
         
     @http.route(['/print_program/<model("school.program"):program>'], type='http', auth='public')
     def print_program(self, program, redirect=None, **post):

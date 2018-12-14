@@ -33,6 +33,31 @@ class CourseGroup(models.Model):
     ## If set a course with an evaluation < 10 will make this course group not acquiered.
     enable_exclusion_bool = fields.Boolean(string='Enable exclusion evaluation', default=False)
     
+    @api.multi
+    def valuate_course_group(self):
+        self.ensure_one()
+        program_id = self.env.context.get('program_id')
+        _logger.info('Add cg %s to %s' % (self.id, program_id))
+        if program_id :
+            program_id = self.env['school.individual_program'].browse(program_id)[0]
+            courses = []
+            for course in self.course_ids:
+                courses.append((0,0,{'source_course_id': course.id, 'dispense' : True}))
+            cg = program_id.valuated_course_group_ids.create({
+                'valuated_program_id' : program_id.id,
+                'source_course_group_id': self.id, 
+                'acquiered' : 'A',
+                'course_ids': courses,
+                'state' : 'candidate',})
+            program_id._get_total_acquiered_credits()
+            return {
+                'value' : {
+                    'total_acquiered_credits' : program_id.total_acquiered_credits,
+                    'total_registered_credits' : program_id.total_registered_credits,
+                    'valuated_course_group_ids' : (6, 0, program_id.valuated_course_group_ids.ids)
+                },
+            }
+    
 class IndividualProgram(models.Model):
     '''Individual Program'''
     _inherit='school.individual_program'
@@ -105,48 +130,55 @@ class IndividualProgram(models.Model):
     evaluation = fields.Float(string="Evaluation",compute="compute_evaluation",digits=dp.get_precision('Evaluation'))
     
     total_registered_credits = fields.Integer(compute='_get_total_acquiered_credits', string='Registered Credits',track_visibility='onchange')
-    total_acquiered_credits = fields.Integer(compute='_get_total_acquiered_credits', string='Acquiered Credits', store=True,track_visibility='onchange')
+    total_acquiered_credits = fields.Integer(compute='_get_total_acquiered_credits', string='Acquiered Credits', store=True, track_visibility='onchange')
 
     program_completed = fields.Boolean(compute='_get_total_acquiered_credits', string="Program Completed", store=True,track_visibility='onchange')
 
-    @api.depends('required_credits', 'bloc_ids.state','bloc_ids.total_acquiered_credits','historical_bloc_1_credits','historical_bloc_2_credits')
+    valuated_course_group_ids = fields.One2many('school.individual_course_group', 'valuated_program_id', string='Valuated Courses Groups', track_visibility='onchange')
+
+    @api.depends('valuated_course_group_ids', 'required_credits', 'bloc_ids.state','bloc_ids.total_acquiered_credits','historical_bloc_1_credits','historical_bloc_2_credits')
     @api.one
     def _get_total_acquiered_credits(self):
         _logger.debug('Trigger "_get_total_acquiered_credits" on Program %s' % self.name)
-        total = sum(bloc_id.total_acquiered_credits if bloc_id.state in ['awarded_first_session','awarded_second_session','failed'] else 0 for bloc_id in self.bloc_ids)
+        total = sum(cg.total_credits for cg in self.valuated_course_group_ids) + sum(bloc_id.total_acquiered_credits if bloc_id.state in ['awarded_first_session','awarded_second_session','failed'] else 0 for bloc_id in self.bloc_ids) or 0
         total_current = sum(bloc_id.total_credits if bloc_id.state in ['progress','postponed'] else 0 for bloc_id in self.bloc_ids)
         self.total_acquiered_credits = total + self.historical_bloc_1_credits + self.historical_bloc_2_credits
-        self.program_completed = self.total_acquiered_credits >= self.required_credits
+        self.program_completed = self.required_credits > 0 and self.total_acquiered_credits >= self.required_credits
+        self.total_registered_credits = self.total_acquiered_credits + total_current
+        self.program_completed = self.required_credits > 0 and self.total_acquiered_credits >= self.required_credits
     
-    
-    # TODO : Fix this it does not seem right
+    @api.depends('valuated_course_group_ids')
+    def _onchange_valuated_course_group_ids(self):
+        for cg in self.valuated_course_group_ids :
+            cg.course_ids.write({
+                'dispense' : True
+            })
+            self._get_total_acquiered_credits()
+            
     @api.depends('grade')
     def _onchange_grade(self):
         if self.grade:
             graduation_date = fields.Date.today()
-        self.total_registered_credits = self.total_acquiered_credits + total_current
-        self.program_completed = self.required_credits > 0 and self.total_acquiered_credits >= self.required_credits
 
-    @api.depends('bloc_ids.evaluation','historical_bloc_1_eval','historical_bloc_2_eval')
+    @api.depends('valuated_course_group_ids', 'bloc_ids.evaluation','historical_bloc_1_eval','historical_bloc_2_eval')
     @api.one
     def compute_evaluation(self):
         total = 0
-        count = 0
+        credit_count = 0
         for bloc in self.bloc_ids:
             if bloc.evaluation > 0 : # if all is granted do not count
-                total += bloc.evaluation
-                count += 1
+                total += bloc.evaluation * bloc.total_credits
+                credit_count += bloc.total_credits
         if self.historical_bloc_1_eval > 0:
-            total += self.historical_bloc_1_eval
-            count += 1
+            total += self.historical_bloc_1_eval * self.historical_bloc_1_credits
+            credit_count += self.historical_bloc_1_credits
         if self.historical_bloc_2_eval > 0:
-            total += self.historical_bloc_2_eval
-            count += 1
-        if count > 0:
-            self.evaluation = total/count
-        # TODO : Implement computation based on UE as per the decret
+            total += self.historical_bloc_2_eval * self.historical_bloc_2_credits
+            credit_count += self.historical_bloc_2_credits
+        if credit_count > 0:
+            self.evaluation = total/credit_count
         
-    @api.depends('bloc_ids.evaluation','historical_bloc_1_eval','historical_bloc_2_eval')
+    @api.depends('valuated_course_group_ids', 'bloc_ids.evaluation','historical_bloc_1_eval','historical_bloc_2_eval')
     @api.multi
     def compute_evaluation_details(self):
         self.ensure_one();
@@ -160,7 +192,21 @@ class IndividualProgram(models.Model):
         return {
             'bloc_evaluations' : ret
         }
-        # TODO : Implement computation based on UE as per the decret
+    
+    not_acquired_ind_course_group_ids = fields.One2many('school.individual_course_group', string='Not Acquiered Courses Groups',compute='_compute_ind_course_group_ids_eval')
+    acquired_ind_course_group_ids = fields.One2many('school.individual_course_group', string='Acquiered Courses Groups',compute='_compute_ind_course_group_ids_eval')
+    remaining_course_group_ids  = fields.One2many('school.course_group', string='Remaining Courses Groups',compute='_compute_ind_course_group_ids_eval')
+    remaining_not_planned_course_group_ids  = fields.One2many('school.course_group', string='Remaining and Not Planned Courses Groups',compute='_compute_ind_course_group_ids_eval')
+    
+    @api.one
+    def _compute_ind_course_group_ids_eval(self):
+        self.not_acquired_ind_course_group_ids = self.ind_course_group_ids.filtered(lambda ic: ic.acquiered == 'NA')
+        self.acquired_ind_course_group_ids = self.ind_course_group_ids.filtered(lambda ic: ic.acquiered == 'A') + self.valuated_course_group_ids
+        self.remaining_course_group_ids = self.source_program_id.course_group_ids - self.acquired_ind_course_group_ids.mapped('source_course_group_id')
+        if len(self.bloc_ids) > 0 :
+            self.remaining_not_planned_course_group_ids = self.remaining_course_group_ids - self.bloc_ids[-1].course_group_ids.mapped('source_course_group_id')
+        else :
+            self.remaining_not_planned_course_group_ids = self.remaining_course_group_ids
     
 class IndividualBloc(models.Model):
     '''Individual Bloc'''
@@ -192,6 +238,7 @@ class IndividualBloc(models.Model):
     total_dispensed_hours = fields.Integer(compute="compute_credits",string="Dispensed Hours",store=True)
     total_not_dispensed_credits = fields.Integer(compute="compute_credits",string="Not Dispensed Credits",store=True)
     total_not_dispensed_hours = fields.Integer(compute='compute_credits', string='Not Dispensed Hours',store=True)
+    total_acquiered_not_dispensed_credits = fields.Integer(compute="compute_credits",string="Acquiered Not Dispensed Credits",store=True)
     
     evaluation = fields.Float(string="Evaluation",compute="compute_evaluation",digits=dp.get_precision('Evaluation'))
     decision = fields.Text(string="Decision",track_visibility='onchange')
@@ -200,13 +247,24 @@ class IndividualBloc(models.Model):
     first_session_result = fields.Float(string="Evaluation",compute="compute_evaluation",digits=dp.get_precision('Evaluation'))
     second_session_result = fields.Float(string="Evaluation",compute="compute_evaluation",digits=dp.get_precision('Evaluation'))
     
+    @api.onchange('state')
+    def _onchange_state(self):
+        if self.state == 'draft' :
+            self.course_group_ids.write({'state': 'draft'})
+        elif self.state == 'progress' :
+            self.course_group_ids.write({'state': 'progress'})
+        else :
+            self.course_group_ids.write({'state': 'confirmed'})
+    
     @api.multi
     def set_to_draft(self, context):
         # TODO use a workflow to make sure only valid changes are used.
+        self.course_group_ids.write({'state': 'draft'})
         return self.write({'state': 'draft'})
     
     @api.multi
     def set_to_progress(self, context):
+        self.course_group_ids.write({'state': 'progress'})
         # TODO use a workflow to make sure only valid changes are used.
         return self.write({'state': 'progress'})
     
@@ -224,6 +282,7 @@ class IndividualBloc(models.Model):
         if isinstance(decision, dict):
             context = decision
             decision = None
+        self.course_group_ids.write({'state': 'confirmed'})
         return self.write({'state': 'awarded_first_session','decision' : decision})
         
     @api.multi
@@ -232,6 +291,7 @@ class IndividualBloc(models.Model):
         if isinstance(decision, dict):
             context = decision
             decision = None
+        self.course_group_ids.write({'state': 'confirmed'})
         return self.write({'state': 'awarded_second_session','decision' : decision})
     
     @api.multi
@@ -240,6 +300,7 @@ class IndividualBloc(models.Model):
         if isinstance(decision, dict):
             context = decision
             decision = None
+        self.course_group_ids.write({'state': 'confirmed'})
         return self.write({'state': 'failed','decision' : decision})
     
     @api.multi
@@ -290,6 +351,7 @@ class IndividualBloc(models.Model):
         self.total_dispensed_hours = sum([icg.total_hours for icg in self.course_group_ids if icg.dispense and not icg.is_ghost_cg])
         self.total_not_dispensed_credits = self.total_credits - self.total_dispensed_credits
         self.total_not_dispensed_hours = self.total_hours - self.total_dispensed_hours
+        self.total_acquiered_not_dispensed_credits = self.total_acquiered_credits - self.total_dispensed_credits
         
     @api.depends('course_group_ids.final_result','course_group_ids.total_weight','course_group_ids.acquiered', 'course_group_ids.is_ghost_cg')
     @api.one
@@ -307,7 +369,7 @@ class IndividualBloc(models.Model):
         if total_weight > 0 :
             self.evaluation = total / total_weight
             self.first_session_result = total_first / total_weight
-            self.total_second = total_first / total_weight
+            self.second_session_result = total_second / total_weight
         else:
             _logger.debug('total_weight is 0 on Bloc %s' % self.name)
             self.evaluation = None
@@ -317,6 +379,34 @@ class IndividualCourseGroup(models.Model):
     '''Individual Course Group'''
     _inherit = 'school.individual_course_group'
     
+    valuated_program_id = fields.Many2one('school.individual_program', string="Program", ondelete='cascade', readonly=True)
+    
+    @api.constrains('bloc_id','valuated_program_id')
+    def _check_bloc_id_constrains(self):
+        if self.bloc_id and self.valuated_program_id :
+            raise UserError('A Course Group cannot be valuated in a program and in a bloc at the same time.')
+    
+    @api.multi
+    def valuate_course_group(self):
+        self.ensure_one()
+        program_id = self.bloc_id.program_id
+        _logger.info('Add cg %s to %s' % (self.id, program_id))
+        if program_id :
+            self.course_ids.write({'dispense' : True})
+            self.write({
+                'bloc_id' : False,
+                'valuated_program_id' : program_id.id,
+                'acquiered' : 'A',
+                'state' : 'candidate',})
+            program_id._get_total_acquiered_credits()
+            return {
+                'value' : {
+                    'total_acquiered_credits' : program_id.total_acquiered_credits,
+                    'total_registered_credits' : program_id.total_registered_credits,
+                    'valuated_course_group_ids' : (6, 0, program_id.valuated_course_group_ids.ids)
+                },
+            }
+            
     ## Compute dispensed hours and ECTS
     
     total_dispensed_credits = fields.Integer(compute="compute_credits",string="Dispensed Credits",store=True)
@@ -340,23 +430,32 @@ class IndividualCourseGroup(models.Model):
                 'first_session_deliberated_result' : max(self.first_session_computed_result, 10),
                 'first_session_deliberated_result_bool' : True,
                 'first_session_note': message,
+                'state' : 'finish',
             })
         else:
             self.write({
                 'second_session_deliberated_result' : max(self.second_session_computed_result, 10) if self.second_session_computed_result_bool else max(self.first_session_computed_result, 10),
                 'second_session_deliberated_result_bool' : True,
                 'second_session_note': message,
+                'state' : 'finish',
             })
     
     state = fields.Selection([
             ('draft','Draft'),
             ('progress','In Progress'),
-            ('finish', 'Awarded'),
+            ('candidate','Candidate'),
+            ('confirmed', 'Confirmed'),
         ], string='Status', index=True, readonly=True, default='draft',
-        #track_visibility='onchange', TODO : is this useful for this case ?
+        track_visibility='onchange',
         copy=False,
-        help=" * The 'Draft' status is used when results are not confirmed yet.\n"
+        help=" * The 'Draft' status is used when course group is only plan.\n"
+             " * The 'In Progress' status is used when results are not confirmed yet.\n"
+             " * The 'Candidate' status is used when the course group is candidate for valuation.\n"
              " * The 'Confirmed' status is when restults are confirmed.")
+        
+    @api.multi
+    def set_to_confirmed(self, context):
+        return self.write({'state': 'confirmed'})
     
     ## If set a course with an evaluation < 10 will make this course group not acquiered.
     
@@ -392,7 +491,7 @@ class IndividualCourseGroup(models.Model):
     
     ## Final ##
     
-    dispense =  fields.Boolean(compute='compute_dispense', string='Dispense',default=False,track_visibility='onchange', store=True)
+    dispense =  fields.Boolean(compute='compute_dispense', string='Valuation',default=False,track_visibility='onchange', store=True)
     
     final_result = fields.Float(compute='compute_final_results', string='Final Result', store=True,digits=dp.get_precision('Evaluation'),track_visibility='onchange')
     final_result_disp = fields.Char(string='Final Result Display', compute='compute_results_disp')
@@ -450,12 +549,7 @@ class IndividualCourseGroup(models.Model):
             if ic.second_session_result_bool :
                 running_second_session_result += ic.second_session_result * ic.c_weight
                 self.second_session_computed_result_bool = True
-                if ic.second_session_result < 10 :
-                    self.second_session_computed_exclusion_result_bool = True
-            elif ic.first_session_result_bool :
-                # Use First session in computation of the second one if no second one
-                running_second_session_result += ic.first_session_result * ic.c_weight
-                if ic.first_session_result < 10 :
+                if max(ic.first_session_result,ic.second_session_result) < 10 :
                     self.second_session_computed_exclusion_result_bool = True
                 
         if self.first_session_computed_result_bool :
@@ -532,8 +626,8 @@ class IndividualCourseGroup(models.Model):
     def compute_second_session_acquiered(self):
         _logger.debug('Trigger "compute_second_session_acquiered" on Course Group %s' % self.name)
         self.second_session_acquiered = self.first_session_acquiered
-        if self.first_session_deliberated_result_bool:
-            self.first_session_acquiered = 'A'
+        if self.second_session_deliberated_result_bool:
+            self.second_session_acquiered = 'A'
         elif self.enable_exclusion_bool :
             if self.second_session_result >= 10 and (not self.second_session_computed_exclusion_result_bool or self.second_session_deliberated_result_bool):
                 self.second_session_acquiered = 'A'
@@ -580,7 +674,6 @@ class IndividualCourseGroup(models.Model):
         else :
             self.acquiered = self.second_session_acquiered
     
-    
 class Course(models.Model):
     '''Course'''
     _inherit = 'school.course'
@@ -616,7 +709,7 @@ class IndividualCourse(models.Model):
         if not self.first_session_result_bool:
             self.first_session_result_disp = ""
         if self.dispense:
-            self.first_session_result_disp = "Val"
+            self.first_session_result_disp = "Disp"
         else :
             self.first_session_result_disp = "%.2f" % self.first_session_result
     
@@ -633,7 +726,7 @@ class IndividualCourse(models.Model):
         if not self.second_session_result_bool:
             self.second_session_result_disp = ""
         if self.dispense:
-            self.second_session_result_disp = "D"
+            self.second_session_result_disp = "Disp"
         else :
             self.second_session_result_disp = "%.2f" % self.second_session_result
 
@@ -674,6 +767,8 @@ class IndividualCourse(models.Model):
     @api.one
     def compute_results(self):
         _logger.debug('Trigger "compute_results" on Course %s' % self.name)
+        self.first_session_result_bool = False
+        self.second_session_result_bool = False
         if self.type == 'D' :
             if self.jun_result :
                 try:

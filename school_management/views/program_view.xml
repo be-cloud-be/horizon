@@ -126,12 +126,13 @@
               <field name="teacher_id" colspan="4"/>
               <field name="sequence" />
               <field name="level" />
+              <field name="period" />
+              <field name="mandatory" />
               <field name="total_hours" />
               <field name="total_credits" />
               <field name="total_weight" />
               <field name="weight" />
             </group>
-
             <field name="course_ids" context="{'default_course_group_id':active_id}">
               <tree string="Courses">
                 <field name="name" />
@@ -684,6 +685,35 @@
               </tree>
             </field>
             <notebook>
+              <page string="Détails des blocs">
+                <h2><field name="bloc1_title" attrs="{'invisible':[('bloc1_course_group_ids','=',[])]}"/></h2>
+                <field name="bloc1_course_group_ids" attrs="{'invisible':[('bloc1_course_group_ids','=',[])]}">
+                  <tree string="Course Group" create="0" delete="0">
+                    <field name="ue_id"/>
+                    <field name="name"/>
+                    <field name="total_hours"/>
+                    <field name="total_credits"/>
+                   </tree>
+                </field>
+                <h2><field name="bloc2_title" attrs="{'invisible':[('bloc2_course_group_ids','=',[])]}"/></h2>
+                <field name="bloc2_course_group_ids" attrs="{'invisible':[('bloc2_course_group_ids','=',[])]}">
+                  <tree string="Course Group" create="0" delete="0">
+                    <field name="ue_id"/>
+                    <field name="name"/>
+                    <field name="total_hours"/>
+                    <field name="total_credits"/>
+                   </tree>
+                </field>
+                <h2><field name="bloc3_title" attrs="{'invisible':[('bloc3_course_group_ids','=',[])]}"/></h2>
+                <field name="bloc3_course_group_ids" attrs="{'invisible':[('bloc3_course_group_ids','=',[])]}">
+                  <tree string="Course Group" create="0" delete="0">
+                    <field name="ue_id"/>
+                    <field name="name"/>
+                    <field name="total_hours"/>
+                    <field name="total_credits"/>
+                   </tree>
+                </field>
+              </page>
               <page string="Description">
                 <field name="description" placeholder="Vade mecum..." colspan="4" />
               </page>

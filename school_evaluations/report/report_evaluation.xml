@@ -21,35 +21,29 @@
 ##############################################################################
 -->
 <odoo>
-    
+
     <!--
     
     Success Certificate
     
     -->
 
-    <report id="report_success_certificate" 
-            model="school.individual_bloc" 
-            string="Success Certificate" 
-            report_type="qweb-pdf" 
-            name="school_evaluations.report_success_certificate_content" 
-            file="school_evaluations.report_success_certificate_content"
-            attachment_use="True"
-            attachment="object.name+'-CERT-'+time.strftime('%d-%m-%Y')+'.pdf'"
-    />
-    
+    <report id="report_success_certificate" model="school.individual_bloc" string="Success Certificate" report_type="qweb-pdf" name="school_evaluations.report_success_certificate_content" file="school_evaluations.report_success_certificate_content" attachment_use="True"
+        attachment="object.name+'-CERT-'+time.strftime('%d-%m-%Y')+'.pdf'" />
+
     <!--Email template -->
     <record id="email_template_success_certificate" model="mail.template">
-            <field name="name">Sucess Certificate - Send by Email</field>
-            <field name="email_to">${(object.student_id.email and '%s &lt;%s&gt;' % (object.student_id.name, object.student_id.email) or '')|safe}</field>
-            <field name="subject">Sucess Certificate</field>
-            <field name="partner_to">${object.student_id.id}</field>
-            <field name="model_id" ref="model_school_individual_bloc"/>
-            <field name="auto_delete" eval="True"/>
-            <field name="report_template" ref="report_success_certificate"/>
-            <field name="report_name">Sucess Certificate</field>
-            <field name="lang">${object.student_id.lang}</field>
-            <field name="body_html"><![CDATA[
+        <field name="name">Sucess Certificate - Send by Email</field>
+        <field name="email_to">${(object.student_id.email and '%s &lt;%s&gt;' % (object.student_id.name, object.student_id.email) or '')|safe}</field>
+        <field name="subject">Sucess Certificate</field>
+        <field name="partner_to">${object.student_id.id}</field>
+        <field name="model_id" ref="model_school_individual_bloc" />
+        <field name="auto_delete" eval="True" />
+        <field name="report_template" ref="report_success_certificate" />
+        <field name="report_name">Sucess Certificate</field>
+        <field name="lang">${object.student_id.lang}</field>
+        <field name="body_html">
+            <![CDATA[
                 <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
                     <p>Hello ${object.student_id.name},</p>
                     <br/>
@@ -58,9 +52,10 @@
                     <p>If you have any question, do not hesitate to contact us.</p>
                     <br/>
                 </div>
-            ]]></field>
+            ]]>
+        </field>
     </record>
-    
+
     <template id="report_success_certificate_content">
         <t t-call="report.html_container">
             <t t-set="data_report_margin_top" t-value="40"/>
@@ -118,35 +113,29 @@
             </t>
         </t>
     </template>
-    
+
     <!--
     
     Success Certificate on programs
     
     -->
-    
-    <report id="report_success_certificate_prog" 
-            model="school.individual_program" 
-            string="Success Certificate" 
-            report_type="qweb-pdf" 
-            name="school_evaluations.report_success_certificate_prog_content" 
-            file="school_evaluations.report_success_certificate_prog_content"
-            attachment_use="True"
-            attachment="object.name+'-CERT-'+time.strftime('%d-%m-%Y')+'.pdf'"
-    />
-    
+
+    <report id="report_success_certificate_prog" model="school.individual_program" string="Success Certificate" report_type="qweb-pdf" name="school_evaluations.report_success_certificate_prog_content" file="school_evaluations.report_success_certificate_prog_content"
+        attachment_use="True" attachment="object.name+'-CERT-'+time.strftime('%d-%m-%Y')+'.pdf'" />
+
     <!--Email template -->
     <record id="email_template_success_certificate_prog" model="mail.template">
-            <field name="name">Sucess Certificate - Send by Email</field>
-            <field name="email_to">${(object.student_id.email and '%s &lt;%s&gt;' % (object.student_id.name, object.student_id.email) or '')|safe}</field>
-            <field name="subject">Sucess Certificate</field>
-            <field name="partner_to">${object.student_id.id}</field>
-            <field name="model_id" ref="model_school_individual_program"/>
-            <field name="auto_delete" eval="True"/>
-            <field name="report_template" ref="report_success_certificate_prog"/>
-            <field name="report_name">Sucess Certificate</field>
-            <field name="lang">${object.student_id.lang}</field>
-            <field name="body_html"><![CDATA[
+        <field name="name">Sucess Certificate - Send by Email</field>
+        <field name="email_to">${(object.student_id.email and '%s &lt;%s&gt;' % (object.student_id.name, object.student_id.email) or '')|safe}</field>
+        <field name="subject">Sucess Certificate</field>
+        <field name="partner_to">${object.student_id.id}</field>
+        <field name="model_id" ref="model_school_individual_program" />
+        <field name="auto_delete" eval="True" />
+        <field name="report_template" ref="report_success_certificate_prog" />
+        <field name="report_name">Sucess Certificate</field>
+        <field name="lang">${object.student_id.lang}</field>
+        <field name="body_html">
+            <![CDATA[
                 <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
                     <p>Hello ${object.student_id.name},</p>
                     <br/>
@@ -155,9 +144,10 @@
                     <p>If you have any question, do not hesitate to contact us.</p>
                     <br/>
                 </div>
-            ]]></field>
+            ]]>
+        </field>
     </record>
-    
+
     <template id="report_success_certificate_prog_content">
         <t t-call="report.html_container">
             <t t-set="data_report_margin_top" t-value="40"/>
@@ -211,35 +201,29 @@
             </t>
         </t>
     </template>
-    
+
     <!--
     
     Evaluations report for students
     
     -->
 
-    <report id="report_evaluation_for_student" 
-            model="school.individual_bloc" 
-            string="Evaluations for student" 
-            report_type="qweb-pdf" 
-            name="school_evaluations.report_evaluation_for_student_content" 
-            file="school_evaluations.report_evaluation_for_student_content"
-            attachment_use="True"
-            attachment="object.name+'-RES-'+time.strftime('%d-%m-%Y')+'.pdf'"
-    />
+    <report id="report_evaluation_for_student" model="school.individual_bloc" string="Evaluations for student" report_type="qweb-pdf" name="school_evaluations.report_evaluation_for_student_content" file="school_evaluations.report_evaluation_for_student_content"
+        attachment_use="True" attachment="object.name+'-RES-'+time.strftime('%d-%m-%Y')+'.pdf'" />
 
     <!--Email template -->
     <record id="email_template_evaluation_for_student" model="mail.template">
-            <field name="name">Evaluation Report - Send by Email</field>
-            <field name="email_to">${(object.student_id.email and '%s &lt;%s&gt;' % (object.student_id.name, object.student_id.email) or '')|safe}</field>
-            <field name="subject">Evaluation Report</field>
-            <field name="partner_to">${object.student_id.id}</field>
-            <field name="model_id" ref="model_school_individual_bloc"/>
-            <field name="auto_delete" eval="True"/>
-            <field name="report_template" ref="report_evaluation_for_student"/>
-            <field name="report_name">Evaluation Report</field>
-            <field name="lang">${object.student_id.lang}</field>
-            <field name="body_html"><![CDATA[
+        <field name="name">Evaluation Report - Send by Email</field>
+        <field name="email_to">${(object.student_id.email and '%s &lt;%s&gt;' % (object.student_id.name, object.student_id.email) or '')|safe}</field>
+        <field name="subject">Evaluation Report</field>
+        <field name="partner_to">${object.student_id.id}</field>
+        <field name="model_id" ref="model_school_individual_bloc" />
+        <field name="auto_delete" eval="True" />
+        <field name="report_template" ref="report_evaluation_for_student" />
+        <field name="report_name">Evaluation Report</field>
+        <field name="lang">${object.student_id.lang}</field>
+        <field name="body_html">
+            <![CDATA[
                 <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
                     <p>Hello ${object.student_id.name},</p>
                     <br/>
@@ -248,7 +232,8 @@
                     <p>If you have any question, do not hesitate to contact us.</p>
                     <br/>
                 </div>
-            ]]></field>
+            ]]>
+        </field>
     </record>
 
     <template id="report_evaluation_for_student_content">
@@ -376,12 +361,7 @@
     
     -->
 
-    <report id="report_deliberation_program_annexe" 
-            model="school.individual_program" 
-            string="Deliberation Report Program" 
-            report_type="qweb-pdf" 
-            name="school_evaluations.report_deliberation_annexe_program" 
-            file="school_evaluations.report_deliberation_annexe_program"
+    <report id="report_deliberation_program_annexe" model="school.individual_program" string="Deliberation Report Program" report_type="qweb-pdf" name="school_evaluations.report_deliberation_annexe_program" file="school_evaluations.report_deliberation_annexe_program"
     />
 
 
@@ -440,13 +420,7 @@
     </template>
 
 
-    <report id="report_deliberation_annexe" 
-            model="school.individual_bloc" 
-            string="Deliberation Report" 
-            report_type="qweb-pdf" 
-            name="school_evaluations.report_deliberation_annexe_content" 
-            file="school_evaluations.report_deliberation_annexe_content"
-    />
+    <report id="report_deliberation_annexe" model="school.individual_bloc" string="Deliberation Report" report_type="qweb-pdf" name="school_evaluations.report_deliberation_annexe_content" file="school_evaluations.report_deliberation_annexe_content" />
 
 
     <template id="report_deliberation_annexe_content">
@@ -591,6 +565,294 @@
         </t>
     </template>
 
+
+    <!-- Individual Bloc Definition Report -->
+
+    <report id="report_individual_bloc_definition" model="school.individual_program" string="Individual Bloc Definition Report" report_type="qweb-pdf" name="school_evaluations.report_individual_bloc_definition_content" file="school_evaluations.report_individual_bloc_definition_content"
+    />
+
+    <template id="report_individual_bloc_definition_content">
+        <t t-call="report.html_container">
+            <t t-set="data_report_margin_top" t-value="40"/>
+            <t t-set="data_report_header_spacing" t-value="35"/>
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="o">
+                    <div class="container" style="page-break-before:always;">
+                        <div class="row" style="font-weight:800;font-size:200%;">
+                            <div class="col-xs-12">
+                                CYCLE-<t t-esc="o.id"/>
+                            </div>
+                            <div class="col-xs-12">
+                                <t t-esc="o.student_id.name"/> 
+                            </div>
+                            <div class="col-xs-12" style="border-bottom: 1px solid #222;">
+                                <t t-esc="o.source_program_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 mb16" style="font-size:160%;font-weight:800;">
+                                 Crédits du cycle obtenus (<t t-esc="o.total_acquiered_credits"/> / <t t-esc="o.source_program_id.total_credits"/>)
+                            </div>
+                            <div class="col-xs-12">
+                                <table class="table table-condensed table-bordered result_table">
+                                    <colgroup>
+                                        <col style="width:120px"/>
+                                        <col style="width:500px"/>
+                                        <col style="width:100px"/>
+                                        <col style="width:100px"/>
+                                        <col style="width:100px"/>
+                                        <col style="width:100px"/>
+                                        <col style="width:250px"/>
+                                        <col style="width:350px"/>
+                                        <col style="width:350px"/>
+                                    </colgroup>
+                                    <thead style="color: #FFFFFF;background-color: #4CAF50;">
+                                        <tr>
+                                            <th>UE Id</th>
+                                            <th>Nom</th>
+                                            <th>Heures</th>
+                                            <th>ECTS</th>
+                                            <th>Résultat final</th>
+                                            <th>ECTS acquis</th>
+                                            <th>Origine</th>
+                                            <th>Avis pédagogique</th>
+                                            <th>Décision jury</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.acquired_ind_course_group_ids" t-as="course_group">
+                                            <tr class="course_group" style="background-color: #f1f1f1;">
+                                                <td>
+                                                    <t t-esc="course_group.ue_id"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="course_group.title"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="course_group.total_hours"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="course_group.total_credits"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="course_group.final_result_disp"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="course_group.total_not_dispensed_credits"/>
+                                                </td>
+                                                <td>
+                                                    <t t-if="course_group.bloc_id">
+                                                    PAE <t t-esc="course_group.bloc_id.year_id.name"/>
+                                                    </t>
+                                                    <t t-if="not course_group.bloc_id and course_group.state == 'candidate'">
+                                                    Attente
+                                                    </t>
+                                                    <t t-if="not course_group.bloc_id and course_group.state == 'confirmed'">
+                                                    Valorisation
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <span />
+                                                </td>
+                                                <td>
+                                                    <span />
+                                                </td>
+                                            </tr>
+                                            <t t-if="course_group.state == 'candidate'">
+                                            <t t-foreach="course_group.course_ids" t-as="course">
+                                            <tr class="course_group">
+                                                <td>
+                                                    <span />
+                                                </td>
+                                                <td>
+                                                    <i><t t-esc="course.title"/></i>
+                                                </td>
+                                                <td>
+                                                    <i><t t-esc="course.hours"/></i>
+                                                </td>
+                                                <td>
+                                                    <i><t t-esc="course.credits"/></i>
+                                                </td>
+                                                <td colspan="5">
+                                                    <i><t t-esc="course.dispense_approval_comment"/></i>
+                                                </td>
+                                            </tr>
+                                            </t>
+                                            </t>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div t-if="len(o.bloc_ids) > 0" class="col-xs-12 mb16" style="font-size:160%;font-weight:800;">
+                                Programme annuel de l'étudiant - PAE-<t t-esc="o.bloc_ids[-1].id"/> (<t t-esc="o.bloc_ids[-1].total_not_dispensed_credits"/> Crédits)
+                            </div>
+                            <div class="col-xs-12">
+                                    <table class="table table-condensed table-bordered result_table">
+                                        <colgroup>
+                                            <col style="width:120px"/>
+                                            <col style="width:500px"/>
+                                            <col style="width:100px"/>
+                                            <col style="width:100px"/>
+                                            <col style="width:100px"/>
+                                            <col style="width:100px"/>
+                                            <col style="width:650px"/>
+                                        </colgroup>
+                                        <thead style="color: #000;background-color: #ffeb3b;">
+                                            <tr>
+                                                <th>UE Id</th>
+                                                <th>Nom</th>
+                                                <th>Heures</th>
+                                                <th>ECTS</th>
+                                                <th>Résultat final</th>
+                                                <th>ECTS acquis</th>
+                                                <th>Commentaire</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-if="len(o.bloc_ids) > 0" t-foreach="o.bloc_ids[-1].course_group_ids" t-as="course_group">
+                                                <tr class="course_group" style="background-color: #f1f1f1;">
+                                                    <td>
+                                                        <t t-esc="course_group.ue_id"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="course_group.title"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="course_group.total_hours"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="course_group.total_credits"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="course_group.final_result_bool">
+                                                            <t t-esc="course_group.final_result_disp"/>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="course_group.acquiered == 'A'">
+                                                            Acquis
+                                                        </t>
+                                                        <t t-if="course_group.acquiered  == 'NA'">
+                                                            Non-Acquis
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <span />
+                                                    </td>
+                                                </tr>
+                                                <t t-foreach="course_group.course_ids" t-as="course">
+                                                <tr class="course_group">
+                                                    <td>
+                                                        <span />
+                                                    </td>
+                                                    <td>
+                                                        <i><t t-esc="course.title"/></i>
+                                                    </td>
+                                                    <td>
+                                                        <i><t t-esc="course.hours"/></i>
+                                                    </td>
+                                                    <td>
+                                                        <i><t t-esc="course.credits"/></i>
+                                                    </td>
+                                                    <td>
+                                                        <i><t t-if="course.second_session_result_bool">
+                                                            <t t-esc="course.second_session_result_disp"/>
+                                                        </t>
+                                                        <t t-if="not course.second_session_result_bool">
+                                                            <t t-esc="course.first_session_result_disp"/>
+                                                        </t></i>
+                                                    </td>
+                                                    <td>
+                                                        <span />
+                                                    </td>
+                                                    <td>
+                                                        <span />
+                                                    </td>
+                                                </tr>
+                                                </t>
+                                          </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-12 mb16" style="font-size:160%;font-weight:800;">
+                                    Crédits du cycle à obtenir (<t t-esc="sum(o.remaining_not_planned_course_group_ids.mapped('total_credits'))"/> Crédits)
+                                </div>
+                                <div class="col-xs-12">
+                                    <table class="table table-condensed table-bordered result_table">
+                                        <colgroup>
+                                            <col style="width:120px"/>
+                                            <col style="width:500px"/>
+                                            <col style="width:100px"/>
+                                            <col style="width:100px"/>
+                                            <col style="width:650px"/>
+                                        </colgroup>
+                                        <thead style="color: #FFFFFF;background-color: #e91e63;">
+                                            <tr>
+                                                <th>UE Id</th>
+                                                <th>Nom</th>
+                                                <th>Heures</th>
+                                                <th>ECTS</th>
+                                                <th>Commentaire</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.remaining_not_planned_course_group_ids" t-as="course_group">
+                                                <tr class="course_group">
+                                                    <td>
+                                                        <t t-esc="course_group.ue_id"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="course_group.title"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="course_group.total_hours"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="course_group.total_credits"/>
+                                                    </td>
+                                                    <td>
+                                                        <span />
+                                                    </td>
+                                                </tr>
+                                          </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="container" style="margin-left:60px;margin-right:60px;page-break-before:always;">
+                        <div class="row" style="margin-top:60px;">
+                            <div class="col-xs-10">
+                                Remarques : 
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:150px;">
+                            <div class="col-xs-6">
+                                Le/La Président-e du jury
+                            </div>
+                            <div class="col-xs-6">
+                                Le/La Secrétaire du jury
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:120px;">
+                            <div class="col-xs-6">
+                                Les Membres du jury
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:200px;">
+                            <div class="col-xs-9">
+                                Imprimé le <span t-esc="datetime.datetime.now().strftime('%d-%m-%Y à %H:%M:%S')"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
     <!--
     
     Evaluations by Teacher
@@ -604,8 +866,8 @@
         <field name="arch" type="xml">
             <form string="Evaluations by teatcher">
                 <group col="4">
-                    <field name="year_id" create="false" delete='false' colspan="4"/>
-                    <field name="teacher_ids" colspan="4" widget="many2many_tags"/>
+                    <field name="year_id" create="false" delete='false' colspan="4" />
+                    <field name="teacher_ids" colspan="4" widget="many2many_tags" />
                     <field name="display_results" />
                     <field name="freeze_first_session" />
                     <h3>Message</h3>
@@ -619,12 +881,7 @@
         </field>
     </record>
 
-    <report id="report_evaluation_by_teacher" 
-            model="school.individual_course" 
-            string="Evaluation by Teacher" 
-            report_type="qweb-pdf" 
-            name="school_evaluations.report_evaluation_by_teacher_content" 
-            file="school_evaluations.report_evaluation_by_teacher_content"
+    <report id="report_evaluation_by_teacher" model="school.individual_course" string="Evaluation by Teacher" report_type="qweb-pdf" name="school_evaluations.report_evaluation_by_teacher_content" file="school_evaluations.report_evaluation_by_teacher_content"
     />
 
     <record id="action_evaluation_report_by_teacher" model="ir.actions.act_window">
@@ -640,14 +897,8 @@
     <menuitem id="menu_evaluation_report_by_teacher" name="Evaluation by Teacher" action="action_evaluation_report_by_teacher" parent="menu_main_evaluation" sequence="900" />
 
     <!--  Add wizard -->
-    <act_window name="Evaluation by Teacher"
-                res_model="school_evaluations.report_evaluation_by_teacher"
-                src_model="res.partner"
-                view_mode="form"
-                target="new"
-                key2="client_action_multi"
-                id="action_evaluation_report_by_teacher"
-                context="{'default_teacher_id': '${object.id or \'\'}'}"/>
+
+    <act_window name="Evaluation by Teacher" res_model="school_evaluations.report_evaluation_by_teacher" src_model="res.partner" view_mode="form" target="new" key2="client_action_multi" id="action_evaluation_report_by_teacher" context="{'default_teacher_id': '${object.id or \'\'}'}"/>
 
     <template id="report_evaluation_by_teacher_content">
         <t t-call="report.html_container">

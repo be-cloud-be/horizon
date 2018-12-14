@@ -96,7 +96,7 @@ return Widget.extend({
         "click .btn-award": function (event) {
             event.preventDefault();
             var self = this;
-            new Model(self.dataset.model).call(this.school_session == 1 ? "set_to_awarded" : "set_to_awarded_second_session",[self.datarecord.id,self.dataset.get_context(),self.parent.year_id]).then(function(result) {
+            new Model(self.dataset.model).call("set_to_awarded",[self.datarecord.id,self.dataset.get_context(),self.parent.year_id]).then(function(result) {
                 self.parent.$(".o_school_bloc_item.active i").removeClass('fa-user');
                 self.parent.$(".o_school_bloc_item.active i").addClass('fa-check');
                 self.next().then(function(){
