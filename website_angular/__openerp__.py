@@ -29,13 +29,13 @@
         'school_booking',
     ],
     'data': [
-        'views/angular_booking.xml',
+        'views/website_angular.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'description': '''
         This module adds an interface for Booking management on the web site.
     ''',
     'active': False,
-    'installable': False,
+    'installable': True,
     'application': True,
 }
