@@ -34,6 +34,22 @@ class BookingLoginController(OAuthLogin):
     @http.route('/angular/login_providers', type='json', auth="none")
     def angular_login(self, redirect=None, *args, **kw):
         return self.list_providers()
+        
+    def get_state(self, provider):
+        redirect = request.params.get('redirect') or 'web'
+        if not redirect.startswith(('//', 'http://', 'https://')):
+            redirect = '%s%s' % (request.httprequest.url_root, redirect[1:] if redirect[0] == '/' else redirect)
+        state = dict(
+            d=request.session.db,
+            p=provider['id'],
+            r=werkzeug.url_quote_plus(redirect),
+        )
+        token = request.params.get('token')
+        if token:
+            state['t'] = token
+        state = super(ParamDoc, self).to_dict()
+        
+        return state
 
 class AngularController(http.Controller):
 
