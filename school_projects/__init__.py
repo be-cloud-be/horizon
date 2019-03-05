@@ -18,25 +18,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import logging
-import time
-import werkzeug.utils
-import json
-
-from openerp import http
-from openerp.http import request
-from openerp.addons.auth_oauth.controllers.main import OAuthLogin
-
-_logger = logging.getLogger(__name__)
-
-class BookingLoginController(OAuthLogin):
-    
-    @http.route('/angular/login_providers', type='json', auth="none")
-    def angular_login(self, redirect=None, *args, **kw):
-        return self.list_providers()
-
-class AngularController(http.Controller):
-
-    @http.route('/angular', type='http', auth='public', website=True)
-    def angular_app(self, debug=False, **k):
-        return http.redirect_with_hash('/website_angular/static/dist/index.html')
+import models

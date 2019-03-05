@@ -368,7 +368,7 @@ class IndividualCourseProxy(models.Model):
             SELECT
                 CAST(CAST(school_individual_course.year_id AS text)||
                 CAST(school_individual_course.teacher_id AS text)||
-                CAST(school_individual_course.source_course_id AS text) AS INTEGER) as id,
+                CAST(school_individual_course.source_course_id AS text) AS BIGINT) as id,
                 school_individual_course.name,
                 school_individual_course.title,
                 school_individual_course.year_id,
@@ -376,14 +376,14 @@ class IndividualCourseProxy(models.Model):
                 school_individual_course.source_course_id,
                 COUNT(CAST(CAST(school_individual_course.year_id AS text)||
                 CAST(school_individual_course.teacher_id AS text)||
-                CAST(school_individual_course.source_course_id AS text) AS INTEGER)) as student_count
+                CAST(school_individual_course.source_course_id AS text) AS BIGINT)) as student_count
             FROM
                 school_individual_course
             WHERE
                 school_individual_course.teacher_id IS NOT NULL
             GROUP BY CAST(CAST(school_individual_course.year_id AS text)||
                 CAST(school_individual_course.teacher_id AS text)||
-                CAST(school_individual_course.source_course_id AS text) AS INTEGER),
+                CAST(school_individual_course.source_course_id AS text) AS BIGINT),
                 school_individual_course.name,
                 school_individual_course.title,
                 school_individual_course.year_id,

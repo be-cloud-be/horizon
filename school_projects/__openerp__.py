@@ -18,25 +18,30 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import logging
-import time
-import werkzeug.utils
-import json
-
-from openerp import http
-from openerp.http import request
-from openerp.addons.auth_oauth.controllers.main import OAuthLogin
-
-_logger = logging.getLogger(__name__)
-
-class BookingLoginController(OAuthLogin):
-    
-    @http.route('/angular/login_providers', type='json', auth="none")
-    def angular_login(self, redirect=None, *args, **kw):
-        return self.list_providers()
-
-class AngularController(http.Controller):
-
-    @http.route('/angular', type='http', auth='public', website=True)
-    def angular_app(self, debug=False, **k):
-        return http.redirect_with_hash('/website_angular/static/dist/index.html')
+{
+    'name': 'School Projects',
+    'version': '0.1',
+    'license': 'AGPL-3',
+    'author': 'be-Cloud.be (Jerome Sonnet)',
+    'website': '',
+    'category': 'School Management',
+    'depends': ['school_management'],
+    'init_xml': [],
+    'update_xml': [
+        'views/projects_view.xml',
+        #'report/report_student_group.xml',
+        #'wizard/linked_group_wizard.xml',
+        #'wizard/merge_group_wizard.xml',
+        'security/ir.model.access.csv',
+    ],
+    'images': [
+        'static/src/img/*.png',
+    ],
+    'demo_xml': [],
+    'description': '''
+        This modules group student for their activities (courses, projects,...)
+    ''',
+    'active': False,
+    'installable': True,
+    'application': True,
+}

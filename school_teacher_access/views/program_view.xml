@@ -80,7 +80,7 @@
             </field>
         </record>
 
-        <!-- <menuitem name="My Information" parent="menu_information" id="menu_details" action="school_teacher_act" sequence="10" /> -->
+        <!-- <menuitem name="My Information" parent="menu_information" id="menu_details" action="school_teacher_act" sequence="10" />
 
         <record id="view_student_group_filter" model="ir.ui.view">
             <field name="name">individual_course.select</field>
@@ -123,7 +123,7 @@
           <field name="view_mode">form</field>
           <field name="view_id" ref="school_student_group.student_group_form" />
           <field name="act_window_id" ref="action_report_school_groups" />
-        </record>
+        </record>-->
 
         <menuitem name="My Courses" parent="menu_main_program" id="menu_courses" action="action_report_school_groups" sequence="20" /> -->
         

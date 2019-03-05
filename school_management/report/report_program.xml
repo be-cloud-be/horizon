@@ -125,8 +125,8 @@
                         <td class="text-center"><t t-esc="course_group.total_hours"/></td>
                         <td class="text-center"><t t-esc="course_group.total_credits"/></td>
                         <td></td>
-                        <td style="font-size: x-small;"><span t-esc="', '.join(map( lambda x: x.preriquisit_id.ue_id, course_group.pre_requisit_ids))"/></td>
-                        <td style="font-size: x-small;"><span t-esc="', '.join(map( lambda x: x.coriquisit_id.ue_id, course_group.co_requisit_ids))"/></td>
+                        <td style="font-size: x-small;"><t t-if="course_group.pre_requisit_ids"><span t-esc="', '.join(map( lambda x: str(x.preriquisit_id.ue_id), course_group.pre_requisit_ids))"/></t></td>
+                        <td style="font-size: x-small;"><t t-if="course_group.co_requisit_ids"><span t-esc="', '.join(map( lambda x: str(x.coriquisit_id.ue_id), course_group.co_requisit_ids))"/></t></td>
                     </tr>
                     <tr t-foreach="course_group.course_ids" t-as="course">
                         <td></td>
