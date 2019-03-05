@@ -34,12 +34,6 @@ class BookingLoginController(OAuthLogin):
     @http.route('/angular/login_providers', type='json', auth="none")
     def angular_login(self, redirect=None, *args, **kw):
         return self.list_providers()
-        
-    def get_state(self, provider):
-        state = super(BookingLoginController, self).get_state(provider)
-        # Change redirect to angular app
-        state['r'] = '%s%s' % (request.httprequest.url_root, 'website_angular/static/dist/index.html')
-        return state
 
 class AngularController(http.Controller):
 
