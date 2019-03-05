@@ -36,19 +36,9 @@ class BookingLoginController(OAuthLogin):
         return self.list_providers()
         
     def get_state(self, provider):
-        redirect = request.params.get('redirect') or 'web'
-        if not redirect.startswith(('//', 'http://', 'https://')):
-            redirect = '%s%s' % (request.httprequest.url_root, redirect[1:] if redirect[0] == '/' else redirect)
-        state = dict(
-            d=request.session.db,
-            p=provider['id'],
-            r=werkzeug.url_quote_plus(redirect),
-        )
-        token = request.params.get('token')
-        if token:
-            state['t'] = token
-        state = super(ParamDoc, self).to_dict()
-        
+        state = super(BookingLoginController, self).get_state(provider)
+        # Change redirect to angular app
+        state['r'] = '%s%s' % (request.httprequest.url_root, 'website_angular/static/dist/index.html')
         return state
 
 class AngularController(http.Controller):
