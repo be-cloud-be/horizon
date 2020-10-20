@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         <!-- Split Course Group Wizard View -->
         <record model="ir.ui.view" id="split_cg_wizard_form">
           <field name="name">school.split_cg_wizard.view</field>
@@ -88,7 +88,7 @@
             <field name="name">Split Course Group Wizard</field>
             <field name="res_model">school.split_cg_wizard</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">form</field>
             <field name="view_id" ref="split_cg_wizard_form"/>
             <field name="context">{'default_source_course_group_id': [active_id]}</field>
@@ -108,5 +108,5 @@
             </field>
         </record>
         
-    </data>
-</openerp>
+    
+</odoo>

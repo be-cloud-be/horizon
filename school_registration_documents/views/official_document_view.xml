@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         
         <!--<menuitem name="Official Documents" id="menu_official_document" icon="fa-book" web_icon="website_portal_sale,static/description/icon.png" sequence="65" />-->
         
@@ -72,7 +72,7 @@
             <field name="name">Official Documents</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">school.official_document</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">tree</field>
         </record>
         
@@ -92,5 +92,5 @@
         
         <menuitem id="menu_official_document_form" parent="school_management.menu_individual_bloc" action="action_official_document_list" sequence="999" />
         
-    </data>
-</openerp>
+    
+</odoo>

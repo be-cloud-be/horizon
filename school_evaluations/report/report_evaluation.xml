@@ -912,7 +912,7 @@
         <field name="name">Evaluations by teatcher</field>
         <field name="res_model">school_evaluations.report_evaluation_by_teacher</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_type">form</field>
+        
         <field name="view_mode">form</field>
         <field name="view_id" ref="school_evaluation_report_view" />
         <field name="target">new</field>

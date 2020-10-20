@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-  <data>
+<odoo>
+  
 
     <menuitem name="Assets" parent="menu_main_booking" id="menu_assets" sequence="900" />
     
@@ -100,7 +100,7 @@
       <field name="name">Buildings</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">school.building</field>
-      <field name="view_type">form</field>
+      
       <field name="view_mode">tree,form</field>
       <field name="search_view_id" ref="view_building_filter" />
       <field name="help" type="html">
@@ -209,7 +209,7 @@
       <field name="name">Assets</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">school.asset</field>
-      <field name="view_type">form</field>
+      
       <field name="view_mode">tree,form</field>
       <field name="search_view_id" ref="view_asset_filter" />
       <field name="help" type="html">
@@ -289,7 +289,7 @@
       <field name="name">Asset Type</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">school.asset_type</field>
-      <field name="view_type">form</field>
+      
       <field name="view_mode">tree,form</field>
       <field name="search_view_id" ref="view_asset_type_filter" />
       <field name="help" type="html">
@@ -352,7 +352,7 @@
         <field name="name">Asset Categories</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">school.asset.category</field>
-        <field name="view_type">form</field>
+        
         <field name="view_mode">tree,form</field>
         <field name="view_id" eval="False"/>
         <field name="help" type="html">
@@ -384,5 +384,5 @@
 
     <menuitem id="menu_asset_category" action="school_asset_category_action" parent="menu_assets" sequence="89" />
     
-  </data>
-</openerp>
+  
+</odoo>

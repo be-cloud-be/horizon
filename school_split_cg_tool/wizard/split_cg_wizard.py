@@ -20,8 +20,8 @@
 ##############################################################################
 import logging
 
-from openerp import api, fields, models, _
-from openerp.exceptions import MissingError
+from odoo import api, fields, models, _
+from odoo.exceptions import MissingError
 
 _logger = logging.getLogger(__name__)
 

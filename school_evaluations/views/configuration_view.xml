@@ -20,9 +20,9 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         <menuitem name="Evaluations" parent="school_management.menu_school_admin" id="menu_admin_evals" sequence="20" />
         
-    </data>
-</openerp>
+    
+</odoo>

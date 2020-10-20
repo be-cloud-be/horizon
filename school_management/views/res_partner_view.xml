@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         <!-- Add boolean for teacher, student, employee on partner form view -->
         <record id="view_partners_form_school" model="ir.ui.view">
             <field name="name">view.res.partner.form.school</field>
@@ -109,7 +109,7 @@
                                         <field name='email_personnel' />
                                         <field name="phone" widget="phone"/>
                                         <field name="mobile" widget="phone"/>
-                                        <field name="fax" widget="phone"/>
+                                        <!--<field name="fax" widget="phone"/>-->
                                     </group>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
             				    <field name="title" options="{&quot;no_open&quot;: True}" attrs="{'invisible': [('is_company', '=', True)]}"/>
             				    <field name="lang"/>
             				    <field name='gender' />
-                                <field name='nationality_id' />
+                                <!--<field name='nationality_id' />-->
                                 <field name="birthplace"/>
                                 <field name="birthdate_date"/>
                                 <field name="reg_number" />
@@ -240,7 +240,7 @@
             <field name="name">Students</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{"search_default_student":1,"default_student":1}</field>
             <field name="search_view_id" ref="view_res_partner_filter" />
@@ -278,7 +278,7 @@
             <field name="name">Teachers</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{"search_default_teacher":1,"default_teacher":1}</field>
             <field name="search_view_id" ref="view_res_partner_filter" />
@@ -343,7 +343,7 @@
             <field name="name">Employees</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{"search_default_employee":1,"default_employee":1}</field>
             <field name="search_view_id" ref="view_res_partner_filter" />
@@ -382,7 +382,7 @@
             <field name="name">Others</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{"search_default_other":1,"default_other":1}</field>
             <field name="search_view_id" ref="view_res_partner_filter" />
@@ -422,7 +422,7 @@
             <field name="name">Archived</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">res.partner</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{"search_default_archived":1,"default_archived":1}</field>
             <field name="search_view_id" ref="view_res_partner_filter" />
@@ -457,5 +457,5 @@
         
         <menuitem id="menu_archived_form" parent="menu_contacts" action="action_archived_form" sequence="99" />
 
-    </data>
-</openerp>
+    
+</odoo>

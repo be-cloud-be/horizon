@@ -18,5 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import program
-import individual_program
+from . import program
+from . import individual_program

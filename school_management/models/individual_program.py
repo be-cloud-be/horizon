@@ -20,8 +20,8 @@
 ##############################################################################
 import logging
 
-from openerp import api, fields, models, tools, _
-from openerp.exceptions import UserError, AccessError
+from odoo import api, fields, models, tools, _
+from odoo.exceptions import UserError, AccessError
 
 _logger = logging.getLogger(__name__)
 
@@ -277,7 +277,7 @@ class IndividualCourse(models.Model):
     '''Individual Course'''
     _name = 'school.individual_course'
     _description = 'Individual Course'
-    _inherit = ['mail.thread','school.year_sequence.mixin','ir.needaction_mixin']
+    _inherit = ['mail.thread','school.year_sequence.mixin','mail.activity.mixin']
     
     _order = 'sequence'
     

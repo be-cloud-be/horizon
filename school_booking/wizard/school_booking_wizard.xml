@@ -44,7 +44,7 @@
         <field name="name">Find a room</field>
         <field name="res_model">school.school_booking_wizard</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_type">form</field>
+        
         <field name="view_mode">form</field>
         <field name="view_id" ref="school_booking_wizard_view"/>
         <field name="context">{}</field>

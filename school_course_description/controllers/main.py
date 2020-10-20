@@ -21,10 +21,10 @@
 
 import logging
 
-from openerp import http
-from openerp.http import request
-from openerp import tools
-from openerp.tools.translate import _
+from odoo import http
+from odoo.http import request
+from odoo import tools
+from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
 

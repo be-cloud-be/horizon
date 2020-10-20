@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
 
         <!-- Prerequisits List View -->
         <record id="view_prerequisit_list" model="ir.ui.view">
@@ -40,7 +40,7 @@
             <field name="name">Prerequisits</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">school.prerequisit</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">tree</field>
         </record>
         
@@ -70,7 +70,7 @@
             <field name="name">Corequisits</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">school.corequisit</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">tree</field>
         </record>
         
@@ -109,5 +109,5 @@
             </field>
         </record>
 
-    </data>
-</openerp>
+    
+</odoo>

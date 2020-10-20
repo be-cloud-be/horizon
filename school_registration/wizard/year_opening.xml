@@ -51,7 +51,7 @@
         <field name="name">Year Opening Wizard</field>
         <field name="res_model">school.year_opening</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_type">form</field>
+        
         <field name="view_mode">form</field>
         <field name="view_id" ref="year_opening_view"/>
         <field name="context">{}</field>

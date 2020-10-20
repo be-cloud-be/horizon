@@ -22,9 +22,9 @@ import logging
 import time
 import base64
 
-from openerp import api, fields, models, tools, _
-from openerp.exceptions import MissingError
-from openerp.tools.safe_eval import safe_eval
+from odoo import api, fields, models, tools, _
+from odoo.exceptions import MissingError
+from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 

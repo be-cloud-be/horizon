@@ -18,6 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import models
-import wizard
-import report
+from . import models
+from . import wizard
+from . import report

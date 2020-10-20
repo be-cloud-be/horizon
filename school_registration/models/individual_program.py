@@ -20,8 +20,8 @@
 ##############################################################################
 import logging
 
-from openerp import api, fields, models, tools, _
-from openerp.exceptions import UserError, AccessError
+from odoo import api, fields, models, tools, _
+from odoo.exceptions import UserError, AccessError
 
 _logger = logging.getLogger(__name__)
 

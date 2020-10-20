@@ -45,7 +45,7 @@
         <field name="name">Generate Course Sessions</field>
         <field name="res_model">school.course_session.generate</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_type">form</field>
+        
         <field name="view_mode">form</field>
         <field name="view_id" ref="course_session_generate_view"/>
         <field name="context">{}</field>

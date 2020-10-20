@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         <template id="assets" name="website_booking assets">
             <!--Import Google Icon Font-->
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -30,7 +30,7 @@
                   
             <!--Import Fullcalendar css-->
             <link rel="stylesheet" href="/web/static/src/css/base.css"/>
-            <link rel="stylesheet" href="/web_calendar/static/lib/fullcalendar/css/fullcalendar.css"/>
+            <link rel="stylesheet" href="/web/static/lib/fullcalendar/css/fullcalendar.css"/>
             <link rel="stylesheet" href="/web_scheduler/static/lib/fullcalendar/scheduler.css" />
             
             <link rel="stylesheet" href="/website_booking/static/lib/timepicker/jquery.timepicker.css" />
@@ -41,8 +41,8 @@
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css"/>
             
             <script src="https://apis.google.com/js/platform.js" async="" defer=""></script>
-            <script type="text/javascript" src="/web_calendar/static/lib/fullcalendar/js/fullcalendar.js"></script>
-            <script type="text/javascript" src="/web_calendar/static/lib/fullcalendar/js/locale-all.js"></script>
+            <script type="text/javascript" src="/web/static/lib/fullcalendar/js/fullcalendar.js"></script>
+            <script type="text/javascript" src="/web/static/lib/fullcalendar/js/locale-all.js"></script>
             <script type="text/javascript" src="/web_scheduler/static/lib/fullcalendar/scheduler.js"></script>
             <script type="text/javascript" src="/website_booking/static/lib/materialize/js/materialize.js"></script>
             <script type="text/javascript" src="/website_booking/static/lib/timepicker/jquery.timepicker.js"></script>
@@ -60,5 +60,5 @@
 
         <menuitem name="Online Booking" id="menu_school_booking" icon="fa-calendar" web_icon="hr_timesheet_sheet,static/description/icon.png" sequence="90" action="action_website_booking" />
 
-    </data>
-</openerp>
+    
+</odoo>

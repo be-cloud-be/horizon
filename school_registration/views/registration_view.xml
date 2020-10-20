@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         <!-- Add program for student form view -->
         <record id="view_program_form_school" model="ir.ui.view">
             <field name="name">view.program.form.school.reg</field>
@@ -58,5 +58,5 @@
             </field>
         </record>
         
-    </data>
-</openerp>
+    
+</odoo>

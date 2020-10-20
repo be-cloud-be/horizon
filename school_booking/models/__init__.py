@@ -18,5 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import school_booking
-import school_asset
+from . import school_booking
+from . import school_asset

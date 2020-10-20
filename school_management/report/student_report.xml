@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
       <!--
     
     Evaluations report for students
@@ -123,7 +123,7 @@
         <record id="action_report_school_student" model="ir.actions.act_window">
             <field name="name">Students Analysis</field>
             <field name="res_model">school.student.report</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">pivot</field>
         </record>
         
@@ -177,7 +177,7 @@
         <record id="action_report_school_teacher" model="ir.actions.act_window">
             <field name="name">Teacher</field>
             <field name="res_model">school.individual_course</field>
-            <field name="view_type">form</field>
+            
             <field name="view_mode">pivot</field>
             <field name="search_view_id" ref="view_individual_course_filter" />
             <field name="view_id" ref="view_individual_course_pivot" />
@@ -186,5 +186,5 @@
         
         <!-- <menuitem id="menu_report_teacher_pivot" parent="menu_teaching_report" action="action_report_school_teacher" sequence="5"/> -->
         
-    </data>
-</openerp>
+    
+</odoo>

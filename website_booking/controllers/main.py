@@ -27,10 +27,10 @@ import dateutil
 import dateutil.parser
 import dateutil.relativedelta
 
-from openerp import api, fields
-from openerp import http
-from openerp.http import request
-from openerp.addons.auth_oauth.controllers.main import OAuthLogin as Home
+from odoo import api, fields
+from odoo import http
+from odoo.http import request
+from odoo.addons.auth_oauth.controllers.main import OAuthLogin as Home
 
 _logger = logging.getLogger(__name__)
 

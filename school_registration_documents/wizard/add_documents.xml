@@ -43,7 +43,7 @@
         <field name="name">Document Add Wizard</field>
         <field name="res_model">school.add_documents_wizard</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_type">form</field>
+        
         <field name="view_mode">form</field>
         <field name="view_id" ref="document_add_view" />
         <field name="context">{}</field>

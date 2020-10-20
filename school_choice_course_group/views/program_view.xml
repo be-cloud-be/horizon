@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         <!-- Add choice to Individual Course Group form view -->
         <record id="course_group_option_form" model="ir.ui.view">
             <field name="name">school.course_group.option.view</field>
@@ -37,5 +37,5 @@
                 </xpath>
             </field>
         </record>
-    </data>
-</openerp>
+    
+</odoo>

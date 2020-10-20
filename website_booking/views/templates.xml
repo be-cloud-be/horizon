@@ -20,131 +20,127 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
-        <template id="index" name="Booking Index" page="True">
-            <t t-call="web.layout">
-                <t t-set="head">
-                    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-                    <meta name="format-detection" content="telephone=no"/>
-                    <meta name="msapplication-tap-highlight" content="no"/>
+<odoo>
+    <template id="index" name="Booking Index">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+                <meta name="format-detection" content="telephone=no"/>
+                <meta name="msapplication-tap-highlight" content="no"/>
 
-                    <t t-call-assets="web.assets_common" t-css="false"/>
-                    <script type="text/javascript">
-                        odoo.define('web.csrf', function (require) {
-                            var token = "<t t-esc="request.csrf_token(None)"/>";
-                            require('web.core').csrf_token = token;
-                            require('qweb').default_dict.csrf_token = token;
-                        });
-                        odoo.db_info = '<t t-raw="db_info"/>';
-                    </script>
-                    <t t-call-assets="web.assets_backend" t-css="false"/>
-                    <t t-call-assets="website_booking.assets"/>
-                    <script type="text/javascript">
-                        $(function() {
-                            odoo.define('website_booking.index', function (require) {
-                                var core = require('web.core');
-                                var ajax = require('web.ajax');
-                                var qweb = core.qweb;
-                                
-                                ajax.loadXML('/website_booking/static/src/xml/browser.xml', qweb).then(function(){
-                                    var Browser = require('website_booking.browser');
-                                    var b = new Browser();
-                                    b.appendTo($(document.body));
-                                });
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <script type="text/javascript">
+                    odoo.define('web.csrf', function (require) {
+                        var token = "<t t-esc="request.csrf_token(None)"/>";
+                        require('web.core').csrf_token = token;
+                        require('qweb').default_dict.csrf_token = token;
+                    });
+                    odoo.db_info = '<t t-raw="db_info"/>';
+                </script>
+                <t t-call-assets="web.assets_backend" t-css="false"/>
+                <t t-call-assets="website_booking.assets"/>
+                <script type="text/javascript">
+                    $(function() {
+                        odoo.define('website_booking.index', function (require) {
+                            var core = require('web.core');
+                            var ajax = require('web.ajax');
+                            var qweb = core.qweb;
+                            
+                            ajax.loadXML('/website_booking/static/src/xml/browser.xml', qweb).then(function(){
+                                var Browser = require('website_booking.browser');
+                                var b = new Browser();
+                                b.appendTo($(document.body));
                             });
                         });
-                    </script>
-                </t>
-            </t>
-        </template>
-        <template id="index_mobile" name="Booking Index Mobile" page="True">
-            <t t-call="web.layout">
-                <t t-set="head">
-                    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-                    <meta name="format-detection" content="telephone=no"/>
-                    <meta name="msapplication-tap-highlight" content="no"/>
-
-                    <t t-call-assets="web.assets_common" t-css="false"/>
-                    <script type="text/javascript">
-                        odoo.define('web.csrf', function (require) {
-                            var token = "<t t-esc="request.csrf_token(None)"/>";
-                            require('web.core').csrf_token = token;
-                            require('qweb').default_dict.csrf_token = token;
-                        });
-                        odoo.db_info = '<t t-raw="db_info"/>';
-                    </script>
-                    <t t-call-assets="web.assets_backend" t-css="false"/>
-                    <t t-call-assets="website_booking.assets"/>
-                    <script type="text/javascript">
-                        $(function() {
-                            odoo.define('website_booking.index', function (require) {
-                                var core = require('web.core');
-                                var ajax = require('web.ajax');
-                                var qweb = core.qweb;
-                                
-                                ajax.loadXML('/website_booking/static/src/xml/browser_mobile.xml', qweb).then(function(){
-                                    var BrowserMobile = require('website_booking.browser_mobile');
-                                    var b = new BrowserMobile();
-                                    b.appendTo($(document.body));
-                                });
-                            });
-                        });
-                    </script>
-                </t>
-            </t>
-        </template>
-        
-        <template id="covid" name="Covid Mobile" page="True">
-            <t t-call="web.layout">
-                <t t-set="head">
-                    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-                    <meta name="format-detection" content="telephone=no"/>
-                    <meta name="msapplication-tap-highlight" content="no"/>
-
-                    <t t-call-assets="website_booking.assets"/>
-                    
-                    <!--Import Google Icon Font-->
-                    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-                    <!--Import materialize.css-->
-                    <link type="text/css" rel="stylesheet" href="/website_booking/static/lib/materialize/css/materialize.css"  media="screen,projection"/>
-                    <script type="text/javascript" src="/web/static/lib/jquery/jquery.js"></script>
-                    <script type="text/javascript" src="/web/static/lib/jquery.ui/jquery-ui.js"></script>
-                    <script type="text/javascript" src="/web/static/lib/jquery/jquery.browser.js"></script>
-                    <script type="text/javascript" src="/website_booking/static/lib/materialize/js/materialize.js"></script>
-                </t>
-                <header class="mobile_header">
-                    <nav class="row cyan darken-2">
-                        <div class="nav-wrapper">
-                            <img style="margin: 0 10px 0 10px; vertical-align:middle;" src="/website_booking/static/src/img/logo.png"/>
-                            <a href="#" class="brand-logo">Suivi COVID-19</a>
-                        </div>
-                    </nav>
-                </header>
-                <div class="container mobile_form" style="margin-top:10px;">
-                    <div class="card-panel cyan">
-                        <span class="white-text">Le Conservatoire est en train de préparer une application en vue de communiquer de manière plus efficace pendant la période de confinement.</span>
-                    </div>
-                    <div class="card-panel">
-                        <label>Eprouvez-vous des difficultés à vous alimenter normalement ?</label>
-                        <div class="input-field">
-                            <select>
-                              <option value="" disabled="" selected="">Sélectionnez votre réponse</option>
-                              <option value="1">Aucune</option>
-                              <option value="2">Quelques difficultés</option>
-                              <option value="3">Beaucoup de difficultés</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    $(document).ready(function(){
-                        $('select').material_select();
                     });
                 </script>
             </t>
-        </template>
-        
-        
-    </data>
-</openerp>
+        </t>
+    </template>
+    <template id="index_mobile" name="Booking Index Mobile">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+                <meta name="format-detection" content="telephone=no"/>
+                <meta name="msapplication-tap-highlight" content="no"/>
+
+                <t t-call-assets="web.assets_common" t-css="false"/>
+                <script type="text/javascript">
+                    odoo.define('web.csrf', function (require) {
+                        var token = "<t t-esc="request.csrf_token(None)"/>";
+                        require('web.core').csrf_token = token;
+                        require('qweb').default_dict.csrf_token = token;
+                    });
+                    odoo.db_info = '<t t-raw="db_info"/>';
+                </script>
+                <t t-call-assets="web.assets_backend" t-css="false"/>
+                <t t-call-assets="website_booking.assets"/>
+                <script type="text/javascript">
+                    $(function() {
+                        odoo.define('website_booking.index', function (require) {
+                            var core = require('web.core');
+                            var ajax = require('web.ajax');
+                            var qweb = core.qweb;
+                            
+                            ajax.loadXML('/website_booking/static/src/xml/browser_mobile.xml', qweb).then(function(){
+                                var BrowserMobile = require('website_booking.browser_mobile');
+                                var b = new BrowserMobile();
+                                b.appendTo($(document.body));
+                            });
+                        });
+                    });
+                </script>
+            </t>
+        </t>
+    </template>
+    
+    <template id="covid" name="Covid Mobile">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+                <meta name="format-detection" content="telephone=no"/>
+                <meta name="msapplication-tap-highlight" content="no"/>
+
+                <t t-call-assets="website_booking.assets"/>
+                
+                <!--Import Google Icon Font-->
+                <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+                <!--Import materialize.css-->
+                <link type="text/css" rel="stylesheet" href="/website_booking/static/lib/materialize/css/materialize.css"  media="screen,projection"/>
+                <script type="text/javascript" src="/web/static/lib/jquery/jquery.js"></script>
+                <script type="text/javascript" src="/web/static/lib/jquery.ui/jquery-ui.js"></script>
+                <script type="text/javascript" src="/web/static/lib/jquery/jquery.browser.js"></script>
+                <script type="text/javascript" src="/website_booking/static/lib/materialize/js/materialize.js"></script>
+            </t>
+            <header class="mobile_header">
+                <nav class="row cyan darken-2">
+                    <div class="nav-wrapper">
+                        <img style="margin: 0 10px 0 10px; vertical-align:middle;" src="/website_booking/static/src/img/logo.png"/>
+                        <a href="#" class="brand-logo">Suivi COVID-19</a>
+                    </div>
+                </nav>
+            </header>
+            <div class="container mobile_form" style="margin-top:10px;">
+                <div class="card-panel cyan">
+                    <span class="white-text">Le Conservatoire est en train de préparer une application en vue de communiquer de manière plus efficace pendant la période de confinement.</span>
+                </div>
+                <div class="card-panel">
+                    <label>Eprouvez-vous des difficultés à vous alimenter normalement ?</label>
+                    <div class="input-field">
+                        <select>
+                          <option value="" disabled="" selected="">Sélectionnez votre réponse</option>
+                          <option value="1">Aucune</option>
+                          <option value="2">Quelques difficultés</option>
+                          <option value="3">Beaucoup de difficultés</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function(){
+                    $('select').material_select();
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

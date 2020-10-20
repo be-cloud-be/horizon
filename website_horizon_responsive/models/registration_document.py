@@ -22,8 +22,8 @@ import logging
 
 from datetime import date
 
-from openerp import api, fields, models, _
-from openerp.exceptions import UserError,ValidationError
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError,ValidationError
 
 _logger = logging.getLogger(__name__)
 

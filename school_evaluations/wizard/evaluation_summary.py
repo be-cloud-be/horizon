@@ -20,11 +20,11 @@
 ##############################################################################
 import logging
 
-from openerp import api, fields, models, _
-from openerp.exceptions import UserError
-from openerp.tools.safe_eval import safe_eval
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+from odoo.tools.safe_eval import safe_eval
 
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from dateutil.relativedelta import relativedelta
 from datetime import datetime,date
 import openerp.addons.decimal_precision as dp

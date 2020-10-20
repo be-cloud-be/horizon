@@ -18,4 +18,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import evaluation_report
+from . import evaluation_report

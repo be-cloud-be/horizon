@@ -21,8 +21,8 @@
 ##############################################################################
 -->
 
-<openerp>
-  <data>
+<odoo>
+  
 
     <template id="assets_backend" name="school calendar assets" inherit_id="calendar.assets_backend">
         <xpath expr="." position="inside">
@@ -104,18 +104,18 @@
         </field>
     </record>
     
-    <record id="booking_calendar_view" model="ir.ui.view">
+<!--    <record id="booking_calendar_view" model="ir.ui.view">
         <field name="name">school.booking.calendar.view</field>
         <field name="model">calendar.event</field>
         <field name="priority" eval="2"/>
         <field name="arch" type="xml">
-            <calendar string="Bookings" date_start="start" date_stop="stop" date_delay="duration" all_day="allday" display="[name]" color="main_categ_id" scheduler_group="room_id" quick_add="False">
+            <calendar string="Bookings" date_start="start" date_stop="stop" date_delay="duration" all_day="allday" color="main_categ_id" scheduler_group="room_id" quick_add="False">
                 <field name="name"/>
                 <field name="room_id"/>
                 <field name="main_categ_id" invisible="1"/>
             </calendar>
         </field>
-    </record>
+    </record> -->
 
     <record id="view_booking_filter" model="ir.ui.view">
       <field name="name">booking.select</field>
@@ -139,8 +139,8 @@
       <field name="name">All Bookings</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">calendar.event</field>
-      <field name="view_type">form</field>
-      <field name="view_mode">tree,form,calendar</field>
+      
+      <field name="view_mode">tree,form</field>
       <field name="search_view_id" ref="view_booking_filter" />
       <field name="context">{"search_default_today":1}</field>
       <field name="help" type="html">
@@ -157,8 +157,8 @@
       <field name="name">Student Bookings</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">calendar.event</field>
-      <field name="view_type">form</field>
-      <field name="view_mode">tree,form,calendar</field>
+      
+      <field name="view_mode">tree,form</field>
       <field name="search_view_id" ref="view_booking_filter" />
       <field name="context" eval="{'search_default_student':1, 'search_default_today':1, 'default_categ_ids':[ref('school_booking.school_student_event_type')]}" />
       <field name="help" type="html">
@@ -175,8 +175,8 @@
       <field name="name">Teacher Bookings</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">calendar.event</field>
-      <field name="view_type">form</field>
-      <field name="view_mode">tree,form,calendar</field>
+      
+      <field name="view_mode">tree,form</field>
       <field name="search_view_id" ref="view_booking_filter" />
       <field name="context" eval="{'search_default_teacher':1, 'search_default_today':1, 'default_categ_ids':[ref('school_booking.school_teacher_event_type')]}" />
       <field name="help" type="html">
@@ -193,8 +193,8 @@
       <field name="name">Management Bookings</field>
       <field name="type">ir.actions.act_window</field>
       <field name="res_model">calendar.event</field>
-      <field name="view_type">form</field>
-      <field name="view_mode">tree,form,calendar</field>
+      
+      <field name="view_mode">tree,form</field>
       <field name="search_view_id" ref="view_booking_filter" />
       <field name="context" eval="{'search_default_management':1, 'search_default_today':1, 'default_categ_ids':[ref('school_booking.school_management_event_type')]}" />
       <field name="help" type="html">
@@ -219,12 +219,12 @@
       <field name="view_id" ref="booking_form" />
       <field name="act_window_id" ref="action_booking_tree" />
     </record>
-    <record id="action_booking_calendar" model="ir.actions.act_window.view">
+    <!--<record id="action_booking_calendar" model="ir.actions.act_window.view">
       <field name="sequence" eval="3" />
       <field name="view_mode">calendar</field>
       <field name="view_id" ref="booking_calendar_view" />
       <field name="act_window_id" ref="action_booking_tree" />
-    </record>
+    </record>-->
     
     <record id="action_booking_stud_tree_tree_view1" model="ir.actions.act_window.view">
       <field name="sequence" eval="1" />
@@ -238,12 +238,12 @@
       <field name="view_id" ref="booking_form" />
       <field name="act_window_id" ref="action_booking_stud_tree" />
     </record>
-    <record id="action_booking_stud_calendar" model="ir.actions.act_window.view">
+    <!--<record id="action_booking_stud_calendar" model="ir.actions.act_window.view">
       <field name="sequence" eval="3" />
       <field name="view_mode">calendar</field>
       <field name="view_id" ref="booking_calendar_view" />
       <field name="act_window_id" ref="action_booking_stud_tree" />
-    </record>
+    </record>-->
     
     <record id="action_booking_man_tree_tree_view1" model="ir.actions.act_window.view">
       <field name="sequence" eval="1" />
@@ -257,12 +257,12 @@
       <field name="view_id" ref="booking_form" />
       <field name="act_window_id" ref="action_booking_man_tree" />
     </record>
-    <record id="action_booking_man_calendar" model="ir.actions.act_window.view">
+    <!--<record id="action_booking_man_calendar" model="ir.actions.act_window.view">
       <field name="sequence" eval="3" />
       <field name="view_mode">calendar</field>
       <field name="view_id" ref="booking_calendar_view" />
       <field name="act_window_id" ref="action_booking_man_tree" />
-    </record>
+    </record>-->
     
     <record id="action_booking_teach_tree_tree_view1" model="ir.actions.act_window.view">
       <field name="sequence" eval="1" />
@@ -276,12 +276,12 @@
       <field name="view_id" ref="booking_form" />
       <field name="act_window_id" ref="action_booking_teach_tree" />
     </record>
-    <record id="action_booking_teach_calendar" model="ir.actions.act_window.view">
+    <!--<record id="action_booking_teach_calendar" model="ir.actions.act_window.view">
       <field name="sequence" eval="3" />
       <field name="view_mode">calendar</field>
       <field name="view_id" ref="booking_calendar_view" />
       <field name="act_window_id" ref="action_booking_teach_tree" />
-    </record>
+    </record>-->
 
     <menuitem id="menu_booking_tree" parent="menu_main_booking" sequence="10" />
 
@@ -294,5 +294,5 @@
     <menuitem id="menu_booking_man_tree" parent="menu_booking_booking_tree" action="action_booking_man_tree" sequence="30" />
 
     
-  </data>
-</openerp>
+  
+</odoo>

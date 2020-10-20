@@ -20,12 +20,12 @@
 ##############################################################################
 import logging
 
-from openerp import api, fields, models, tools, _
-from openerp.exceptions import MissingError
+from odoo import api, fields, models, tools, _
+from odoo.exceptions import MissingError
 
 _logger = logging.getLogger(__name__)
 
-from openerp.addons.report_xlsx.report.report_xlsx import ReportXlsx
+from odoo.addons.report_xlsx.report.report_xlsx import ReportXlsx
 
 class PartnerXlsx(ReportXlsx):
 

@@ -20,32 +20,30 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data noupdate="1">
+<odoo>
 
-        <record id="group_employee" model="res.groups">
-            <field name="name">Employees</field>
-        </record>
+    <record id="group_employee" model="res.groups">
+        <field name="name">Employees</field>
+    </record>
 
-        <record id="group_teacher" model="res.groups">
-            <field name="name">Teachers</field>
-        </record>
+    <record id="group_teacher" model="res.groups">
+        <field name="name">Teachers</field>
+    </record>
 
-        <record id="group_student" model="res.groups">
-            <field name="name">Students</field>
-        </record>
+    <record id="group_student" model="res.groups">
+        <field name="name">Students</field>
+    </record>
 
-        <record id="group_program_management" model="res.groups">
-            <field name="name">Gestion des programmes</field>
-        </record>
+    <record id="group_program_management" model="res.groups">
+        <field name="name">Gestion des programmes</field>
+    </record>
 
-        <record id="group_registration" model="res.groups">
-            <field name="name">Inscriptions</field>
-        </record>
+    <record id="group_registration" model="res.groups">
+        <field name="name">Inscriptions</field>
+    </record>
 
-        <record id="group_teacher_portal" model="res.groups">
-            <field name="name">Enseignant Portail</field>
-        </record>
+    <record id="group_teacher_portal" model="res.groups">
+        <field name="name">Enseignant Portail</field>
+    </record>
 
-    </data>
-</openerp>
+</odoo>

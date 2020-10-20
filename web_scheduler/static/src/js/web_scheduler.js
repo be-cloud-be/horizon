@@ -27,7 +27,7 @@ odoo.define('web_scheduler.SchedulerView', function (require) {
     var _lt = core._lt;
     
     var Model = require('web.DataModel');
-    var CalendarView = require('web_calendar.CalendarView');
+    var CalendarView = require('web.CalendarView');
     
     CalendarView.include({
          

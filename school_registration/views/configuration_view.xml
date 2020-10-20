@@ -20,10 +20,10 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
         
         <menuitem name="Registration" parent="school_management.menu_school_admin" id="menu_admin_registration" sequence="30" groups="school_management.group_employee"/>
         
-    </data>
-</openerp>
+    
+</odoo>

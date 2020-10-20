@@ -19,10 +19,10 @@
 ##############################################################################
 import logging
 
-from openerp import api, fields, models, _
-from openerp.exceptions import UserError, ValidationError
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError
 
-from openerp.addons import decimal_precision as dp
+from odoo.addons import decimal_precision as dp
 
 _logger = logging.getLogger(__name__)
 

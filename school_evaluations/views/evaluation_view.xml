@@ -20,8 +20,8 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data>
+<odoo>
+    
     
         <!-- Top menu item -->
         <menuitem name="Evaluations" id="menu_main_evaluation" icon="fa-book" web_icon="survey,static/description/icon.png" sequence="65" groups="school_evaluations.group_evaluations,school_management.group_teacher"/>
@@ -505,7 +505,7 @@
           <field name="name">Encodage Résultats AA</field>
           <field name="type">ir.actions.act_window</field>
           <field name="res_model">school.individual_course</field>
-          <field name="view_type">form</field>
+          
           <field name="view_mode">tree,form</field>
           <field name="context">{"search_default_current":1}</field>
           <field name="search_view_id" ref="school_management.view_individual_courses_filter" />
@@ -520,7 +520,7 @@
           <field name="name">Encodage Résultats AA</field>
           <field name="type">ir.actions.act_window</field>
           <field name="res_model">school.individual_course</field>
-          <field name="view_type">form</field>
+          
           <field name="view_mode">tree,form</field>
           <field name="context">{"search_default_my_current_courses":1}</field>
           <field name="search_view_id" ref="school_management.view_individual_courses_filter" />
@@ -545,5 +545,5 @@
     
         <menuitem id="menu_school_eval" name="Deliberation" action="action_school_evaluations" icon="fa-envelope" web_icon="school_evaluations,static/description/icon.png" sequence="70" />
 
-    </data>
-</openerp>
+    
+</odoo>

@@ -22,8 +22,8 @@ import logging
 import pytz
 from datetime import datetime, date, time, timedelta
 
-from openerp import api, fields, models, _, tools
-from openerp.exceptions import UserError, ValidationError
+from odoo import api, fields, models, _, tools
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 

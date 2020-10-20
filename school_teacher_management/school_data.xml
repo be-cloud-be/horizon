@@ -20,12 +20,11 @@
 #
 ##############################################################################
 -->
-<openerp>
-    <data noupdate="1">
+<odoo>
 
         <record id="group_designation" model="res.groups">
             <field name="name">Designation</field>
         </record>
 
-    </data>
-</openerp>
+    
+</odoo>

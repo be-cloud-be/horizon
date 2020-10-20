@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data noupdate="1">
+<odoo>
     
         <!--<record id="seq_student" model="ir.sequence">
             <field name="name">Students</field>
@@ -23,5 +22,5 @@
             <field name="padding">6</field>
         </record>-->
       
-    </data>
-</openerp>
+    
+</odoo>
